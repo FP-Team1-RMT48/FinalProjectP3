@@ -1,12 +1,14 @@
+import Link from "next/link";
+
 export default function Navbar() {
     return (
         <header className="bg-white sticky top-0 z-50 border-b-2 flex justify-between px-5 py-4 items-center font-bold text-base-100">
             <div className="flex items-center">
-                <p>Bazar Komplek</p>
+                <Link href={"/"}>Bazar Komplek</Link>
             </div>
 
             <div className=" md:flex items-center gap-10">
-                <p className="hidden md:block">Events</p>
+                <Link href={"/events"} className="hidden md:block">Events</Link>
                 <p className="hidden md:block">My Order</p>
                 <p className="hidden md:block">My Lapak</p>
                 <div className="dropdown dropdown-end">
@@ -35,7 +37,7 @@ export default function Navbar() {
                     className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52"
                 >
                     <li className="block md:hidden">
-                        <a>Events</a>
+                        <Link href={"/events"}>Events</Link>
                     </li>
                     <li className="block md:hidden">
                         <a>My Order</a>
