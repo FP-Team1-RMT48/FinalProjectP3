@@ -58,7 +58,7 @@ export default function Home() {
                         />
                     </svg>
                 </Link>
-                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center md:justify-space">
+                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center md:justify-space">
                 {events.map((e) => (
                                   <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
                                       <figure>
@@ -104,7 +104,7 @@ export default function Home() {
                         />
                     </svg>
                 </Link>
-                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center">
+                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
                 {events.map((e) => (
                                    <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
                                    <figure>
@@ -150,7 +150,7 @@ export default function Home() {
                         />
                     </svg>
                 </Link>
-                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center">
+                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
                 {events.map((e) => (
                                    <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
                                    <figure>

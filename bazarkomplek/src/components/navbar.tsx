@@ -11,7 +11,7 @@ export default function Navbar() {
         <Link href={"/events"} className="hidden md:block">
           Events
         </Link>
-        <p className="hidden md:block">My Order</p>
+        <Link href={"/my-orders"} className="hidden md:block">My Orders</Link>
         <p className="hidden md:block">My Lapak</p>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -38,7 +38,7 @@ export default function Navbar() {
               <Link href={"/events"}>Events</Link>
             </li>
             <li className="block md:hidden">
-              <a>My Order</a>
+              <Link href={"/my-orders"}>My Orders</Link>
             </li>
             <li className="block md:hidden">
               <a>My Lapak</a>
