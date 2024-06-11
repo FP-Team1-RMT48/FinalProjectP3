@@ -1,113 +1,182 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+  const events = [1,2,3]
+    return (
+        <main className="flex min-h-screen flex-col justify-between gap-10 pb-10">
+            <div className="carousel w-full max-h-[750px]">
+                <div id="slide1" className="carousel-item relative w-full">
+                    <img
+                        src="/logo.jpg"
+                        className="w-full object-contain bg-primary"
+                        alt="Logo"
+                    />
+                    <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+                        <a href="#slide2" className="btn btn-circle">
+                            ❮
+                        </a>
+                        <a href="#slide2" className="btn btn-circle">
+                            ❯
+                        </a>
+                    </div>
+                </div>
+                <div id="slide2" className="carousel-item relative w-full">
+                    <img
+                        src="/moving-van.jpg"
+                        className="w-full object-cover"
+                        alt="Moving Van"
+                    />
+                    <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+                        <a href="#slide1" className="btn btn-circle">
+                            ❮
+                        </a>
+                        <a href="#slide1" className="btn btn-circle">
+                            ❯
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+            <div className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
+                <Link
+                    href={""}
+                    className="text-base-100 flex flex-row items-center gap-1"
+                >
+                    <p className=""> Event 1</p>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-4"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                        />
+                    </svg>
+                </Link>
+                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center md:justify-space">
+                {events.map((e) => (
+                                  <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
+                                      <figure>
+                                          <img
+                                              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                                              alt="Shoes"
+                                          />
+                                      </figure>
+                                      <div className="card-body">
+                                          <h2 className="card-title">Product</h2>
+                                          <p>
+                                              If a dog chews shoes whose shoes does he choose?
+                                          </p>
+                                          <div className="card-actions justify-end">
+                                              <button className="btn btn-primary">
+                                                  View Details
+                                              </button>
+                                          </div>
+                                      </div>
+                                  </div>
+                ))}
+              </div>
+            </div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            <div className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
+                <Link
+                    href={""}
+                    className="text-base-100 flex flex-row items-center gap-1"
+                >
+                    <p className=""> Event 2</p>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-4"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                        />
+                    </svg>
+                </Link>
+                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center">
+                {events.map((e) => (
+                                   <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
+                                   <figure>
+                                       <img
+                                           src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                                           alt="Shoes"
+                                       />
+                                   </figure>
+                                   <div className="card-body">
+                                       <h2 className="card-title">Product</h2>
+                                       <p>
+                                           If a dog chews shoes whose shoes does he choose?
+                                       </p>
+                                       <div className="card-actions justify-end">
+                                           <button className="btn btn-primary">
+                                               View Details
+                                           </button>
+                                       </div>
+                                   </div>
+                               </div>
+                ))}
+              </div>
+            </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+            <div className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
+                <Link
+                    href={""}
+                    className="text-base-100 flex flex-row items-center gap-1"
+                >
+                    <p className=""> Upcoming Events</p>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-4"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                        />
+                    </svg>
+                </Link>
+                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center">
+                {events.map((e) => (
+                                   <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
+                                   <figure>
+                                       <img
+                                           src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                                           alt="Shoes"
+                                       />
+                                   </figure>
+                                   <div className="card-body">
+                                       <h2 className="card-title">Event</h2>
+                                       <p>
+                                           Event Location
+                                       </p>
+                                       <p>
+                                           Event Time
+                                       </p>
+                                       <div className="card-actions justify-end">
+                                           <button className="btn btn-primary">
+                                               View Details
+                                           </button>
+                                       </div>
+                                   </div>
+                               </div>
+                ))}
+              </div>
+            </div>
+        </main>
+    );
 }
