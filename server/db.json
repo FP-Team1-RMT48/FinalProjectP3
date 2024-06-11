@@ -1,0 +1,151 @@
+{
+    "users": [
+        {
+            "username": "Lorianne Dalgetty",
+            "email": "Lorianne@mail.com",
+            "password": "Lorianne123",
+            "location": "Jl. perumahan puncak buring indah",
+            "phoneNumber": "081230933xxx",
+            "isAdmin": false
+          }, 
+          {
+            "username": "Lance Deely",
+            "email": "Lance@mail.com",
+            "password": "Lance123",
+            "location": "Jl. perumahan puncak buring indah",
+            "phoneNumber": "081230888xxx",
+            "isAdmin": false
+          }, 
+          {
+            "username": "Fidela Spitell",
+            "email": "Fidella@mail.com",
+            "password": "Fidella123",
+            "location": "Jl. Blimbing Indah Megah",
+            "phoneNumber": "081230555xxx",
+            "isAdmin": false
+          }, 
+          {
+            "username": "Sherye Fackney",
+            "email": "Sherye@mail.com",
+            "password": "Sherye123",
+            "location": "Jl. Blimbing Indah Megah",
+            "phoneNumber": "081230444xxx",
+            "isAdmin": false
+          },
+          {
+            "username": "Admin1",
+            "email": "admin1@mail.com",
+            "password": "admin123",
+            "location": "Jl. Blimbing Indah Megah",
+            "phoneNumber": "081230444xxx",
+            "isAdmin": true
+          }
+    ],
+    "events": [
+        {
+            "name": "Bazaar Komplek 1",
+            "location": "Jl. perumahan puncak buring indah",
+            "eventImg": "https://img.freepik.com/free-photo/antiques-market-objects-assortment_23-2148950948.jpg?t=st=1718095998~exp=1718099598~hmac=3a73dbd5523c1c254cfe9ccfa5c98ac28d19702e47a69ec9464e40339b72561a&w=996",
+            "lapak": 0,
+            "startDate": "2024-06-11",
+            "endDate": "2024-06-18"
+        }, 
+        {
+            "name": "Bazaar Komplek 2",
+            "location": "Jl. Blimbing Indah Megah",
+            "eventImg": "https://img.freepik.com/free-photo/arrangement-antiques-market-objects_23-2148950911.jpg?t=st=1718096469~exp=1718100069~hmac=c551118598f0302fcc9078ee83a45b3e0012355236084f9572ab3de847477d00&w=996",
+            "lapak": 0,
+            "startDate": "2024-06-18",
+            "endDate": "2024-06-25"
+        }
+    ],
+    "products": [
+        {
+            "sellerId": 1,
+            "name": "ULTRABOOST LIGHT SHOES",
+            "slug": "ultraboost-light-shoes",
+            "image": "https://www.adidas.co.id/media/catalog/product/cache/3bec5fdb79d91223b1a151be2b21ce8d/i/e/ie5830_2_footwear_photography_side20lateral20view_grey.jpg",
+            "description": "Celebrate Earth Day by taking a long loop in these adidas running shoes. Light BOOST puts an extra spring in your step. The PRIMEKNIT+FORGED upper adapts to the changing shape of your foot as you run. Embroidered leaves and flowers send the message that small changes can make a big difference. This product features at least 20% recycled materials. By reusing materials that have already been created, we help to reduce waste and our reliance on finite resources and reduce the footprint of the products we make.",
+            "type": "small",
+            "status": "available",
+            "eventId": 1,
+            "price": 1500000
+        },
+        {
+            "sellerId": 1,
+            "name": "Living Room Sofa",
+            "slug": "living-room-sofa",
+            "image": "https://img.freepik.com/free-photo/beautiful-interior-room-design-concept_23-2148786485.jpg?t=st=1718091018~exp=1718094618~hmac=31daf1dd890db2dfb928800178aba439cf20f2080785f49ea533a25b8e0ed407&w=996",
+            "description": "The most comfy living room sofa that will bring your living room to the most amazing place",
+            "type": "large",
+            "status": "available",
+            "eventId": 1,
+            "price": 300000
+        },
+        {
+            "sellerId": 2,
+            "name": "Kitchen Set",
+            "slug": "kitchen-set",
+            "image": "https://img.freepik.com/free-photo/flat-lay-utensils-composition-arrangement_23-2149491440.jpg?t=st=1718091524~exp=1718095124~hmac=605f579a474f8eff956d66e8be16e0d34d22e36ae5914cf17db666721b79e6cf&w=996",
+            "description": "best kitchen set that also comes with a good condition box",
+            "type": "medium",
+            "status": "available",
+            "eventId": 2,
+            "price": 900000
+        },
+        {
+            "sellerId": 2,
+            "name": "Macbook",
+            "slug": "macbook",
+            "image": "https://img.freepik.com/free-photo/laptop-with-blank-black-screen-white-table_53876-97915.jpg?t=st=1718091258~exp=1718094858~hmac=5610ce819d00cc650fd091e6316ece187a5cb4423d8643479f1bbf82e7f39239&w=996",
+            "description": "Macbook in a really good condition with high-end spec",
+            "type": "Medium",
+            "status": "available",
+            "eventId": 2,
+            "price": 11500000
+        },
+        {
+            "sellerId": 3,
+            "name": "Garden Set Equipment",
+            "slug": "garden-set-equipment",
+            "image": "https://img.freepik.com/free-photo/gardening-equipment-watering-can-peat-pot-secateurs-rope-gardening-gloves-concrete-backdrop_23-2148181185.jpg?t=st=1718091744~exp=1718095344~hmac=b9fc90a9e072bcdbb501a01f74ed6dd5cf746f2452f1ef66c6bcef2cdac54c79&w=996",
+            "description": "latest gardening equipment set that improve your gardening skill",
+            "type": "Medium",
+            "status": "available",
+            "eventId": 1,
+            "price": 750000
+        },
+        {
+            "sellerId": 3,
+            "name": "Bym Select Low Trainers",
+            "slug": "bym-select-low-trainers",
+            "image": "https://www.adidas.co.id/media/catalog/product/cache/3bec5fdb79d91223b1a151be2b21ce8d/i/d/id6097_2_footwear_photography_side20lateral20view_grey.jpg",
+            "description": "These low-profile basketball shoes from adidas provide elevated comfort and style to your on-court look. With an energy-returning BOOST midsole, every step toward the rack is super charged. The textile upper is durable so you can wear these shoes all season long, while the rubber outsole keeps your grip secure for much-needed support.",
+            "type": "small",
+            "status": "available",
+            "eventId": 2,
+            "price": 1500000
+        },
+        {
+            "sellerId": 4,
+            "name": "Tennis Racket",
+            "slug": "tennis-racket",
+            "image": "https://img.freepik.com/free-photo/tennis-rackets-with-balls-court_23-2148277796.jpg?t=st=1718092617~exp=1718096217~hmac=c2c5fbd02be288dfefe58790bef4702eb2ad56271b102fdd6c910f1ab3967a44&w=996",
+            "type": "medium",
+            "status": "available",
+            "eventId": 1,
+            "price": 2500000
+        },
+        {
+            "sellerId": 4,
+            "name": "Living Room Sofa",
+            "slug": "living-room-sofa",
+            "image": "https://img.freepik.com/free-photo/beautiful-interior-room-design-concept_23-2148786485.jpg?t=st=1718091018~exp=1718094618~hmac=31daf1dd890db2dfb928800178aba439cf20f2080785f49ea533a25b8e0ed407&w=996",
+            "description": "The most comfy living room sofa that will bring your living room to the most amazing place",
+            "type": "large",
+            "status": "available",
+            "eventId": 2,
+            "price": 300000
+        }
+    ]
+}
