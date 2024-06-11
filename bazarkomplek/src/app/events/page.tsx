@@ -35,7 +35,7 @@ export default function Events() {
             </div>
 
 
-            <p className="xs:text-sm md:text-lg font-bold pt-10 pb-4">Upcoming Events</p>
+            <p className="xs:text-sm md:text-lg font-bold pt-20 pb-4">Upcoming Events</p>
             <div className="event-container flex-wrap flex mx-5 p-4 shadow-xl gap-8 justify-center">
                 {events.map((e) => (
                                     <div key={e} className="card w-96 h-[35rem] bg-base-100 shadow-xl image-full flex flex-col">
