@@ -1,17 +1,19 @@
-export default function MyOrders() {
+export default function MyLapak() {
     return (
         <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
-            <h3 className="font-bold text-2xl sm:text-3xl">MY ORDERS</h3>
-            <div className="flex w-5/6 md:w-4/6 lg:w-3/6 p-3 gap-5 bg-white rounded-lg text-xs md:text-lg font-bold border-2 shadow-lg">
-                <p className="py-2">Status: </p>
+            <h3 className="font-bold text-2xl sm:text-3xl">MY LAPAK</h3>
+            <div className="flex justify-center w-5/6 md:w-4/6 lg:w-3/6 p-3 gap-5 bg-white rounded-lg text-xs md:text-lg font-bold border-2 shadow-lg">
                 <button className="bg-base-100 rounded-lg p-2 text-white">
-                    Pending
+                    Available
                 </button>
                 <button className="bg-base-100 rounded-lg p-2 text-white ">
-                    Cancelled
+                    Verifying
+                </button>
+                <button className="bg-base-100 rounded-lg p-2 text-white md:min-w-24">
+                    Sold
                 </button>
                 <button className="bg-base-100 rounded-lg p-2 text-white ">
-                    Completed
+                    Add Product
                 </button>
             </div>
 
@@ -28,9 +30,9 @@ export default function MyOrders() {
                         <p>
                             Product Name
                         </p>
-                        <p className="pb-4">product price</p>
+                        <p className="pb-4">Product Price</p>
                     </div>
-                    <div className="h-full w-1/6 md:jusify-end md:items-start flex">
+                    <div className="h-full w-1/6 md:justify-between md:items-start flex gap-6 flex-col">
                     <button className="ml-auto">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -47,6 +49,7 @@ export default function MyOrders() {
                             />
                         </svg>
                     </button>
+                    <button className="w-full mb-4 py-2 bg-base-100 text-primary rounded-full">Edit</button>
                     </div>
                 </div>
             </div>
