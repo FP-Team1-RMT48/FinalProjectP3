@@ -11,8 +11,12 @@ export default function Navbar() {
         <Link href={"/events"} className="hidden md:block">
           Events
         </Link>
-        <Link href={"/my-orders"} className="hidden md:block">My Orders</Link>
-        <Link href={"/my-lapak"} className="hidden md:block">My Lapak</Link>
+        <Link href={"/my-orders"} className="hidden md:block">
+          My Orders
+        </Link>
+        <Link href={"/my-lapak"} className="hidden md:block">
+          My Lapak
+        </Link>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -44,7 +48,7 @@ export default function Navbar() {
               <Link href={"/my-lapak"}>My Lapak</Link>
             </li>
             <li className="">
-              <a>Login / Register</a>
+              <Link href={"/login"}>Login / Register</Link>
             </li>
             <li className="">
               <a>Profile</a>
