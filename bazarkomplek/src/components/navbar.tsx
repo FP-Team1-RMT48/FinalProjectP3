@@ -6,7 +6,7 @@ export default function Navbar() {
   return (
     <header className="bg-white sticky top-0 z-50 border-b-2 flex justify-between px-5 py-4 items-center font-bold text-base-100">
       <div className="flex items-center">
-        <Link href={"/"}>Bazar Komplek</Link>
+        <Link href={"/"} className="font-bold text-2xl">Bazar Komplek</Link>
       </div>
 
       <div className=" md:flex items-center gap-10">
@@ -47,7 +47,7 @@ export default function Navbar() {
               <Link href={"/my-orders"}>My Orders</Link>
             </li>
             <li className="block md:hidden">
-              <Link href={"/my-lapak"}>My Lapak</Link>
+              <Link href={"/my-lapak"}>My Lapak</Link>  
             </li>
             <li className="">
               <Link href={"/login"}>Login / Register</Link>
@@ -56,7 +56,7 @@ export default function Navbar() {
               <a>Profile</a>
             </li>
             <li className="">
-              <a>About Us</a>
+              <Link href={"/about-us"}>About Us</Link>
             </li>
           </ul>
         </div>
