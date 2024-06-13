@@ -1,4 +1,6 @@
+import { logout } from "@/app/action";
 import Link from "next/link";
+import { LogoutBtn } from "./button";
 
 export default function Navbar() {
   return (
@@ -11,8 +13,12 @@ export default function Navbar() {
         <Link href={"/events"} className="hidden md:block">
           Events
         </Link>
-        <Link href={"/my-orders"} className="hidden md:block">My Orders</Link>
-        <Link href={"/my-lapak"} className="hidden md:block">My Lapak</Link>
+        <Link href={"/my-orders"} className="hidden md:block">
+          My Orders
+        </Link>
+        <Link href={"/my-lapak"} className="hidden md:block">
+          My Lapak
+        </Link>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -44,7 +50,7 @@ export default function Navbar() {
               <Link href={"/my-lapak"}>My Lapak</Link>
             </li>
             <li className="">
-              <a>Login / Register</a>
+              <Link href={"/login"}>Login / Register</Link>
             </li>
             <li className="">
               <a>Profile</a>
@@ -54,6 +60,26 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
+      </div>
+    </header>
+  );
+}
+
+export function AdminNavbar() {
+  return (
+    <header className="bg-white sticky top-0 z-50 border-b-2 flex justify-between px-5 py-4 items-center font-bold text-base-100">
+      <div className="flex items-center">
+        <Link href={"/"}>Bazar Komplek</Link>
+      </div>
+
+      <div className=" md:flex items-center gap-10">
+        <Link href={"/admin-products"} className="hidden md:block">
+          Products
+        </Link>
+        <Link href={"/admin-events"} className="hidden md:block">
+          Events
+        </Link>
+        <LogoutBtn />
       </div>
     </header>
   );
