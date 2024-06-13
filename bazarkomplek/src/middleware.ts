@@ -7,7 +7,6 @@ export const dynamic = "force-dynamic";
 
 export async function middleware(request: NextRequest) {
     const token = cookies().get("Authorization")?.value.split(" ")[1];
-
     if (!token) {
         return NextResponse.json(
             {
@@ -39,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/api/profile/:path*"],
+    matcher: ["/api/products/add"],
 };
