@@ -1,7 +1,12 @@
 import Link from "next/link";
+import React from "react";
+import SmallProductCard from "@/components/small-productCard";
+import SmallEventCard from "@/components/small-eventCard";
 
 export default function Home() {
   const events = [1,2,3]
+
+
     return (
         <main className="flex min-h-screen flex-col justify-between gap-10 pb-10">
             <div className="carousel w-full max-h-[750px]">
@@ -58,27 +63,9 @@ export default function Home() {
                         />
                     </svg>
                 </Link>
-                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center md:justify-space">
-                {events.map((e) => (
-                                  <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
-                                      <figure>
-                                          <img
-                                              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                                              alt="Shoes"
-                                          />
-                                      </figure>
-                                      <div className="card-body">
-                                          <h2 className="card-title">Product</h2>
-                                          <p>
-                                              If a dog chews shoes whose shoes does he choose?
-                                          </p>
-                                          <div className="card-actions justify-end">
-                                              <button className="btn btn-primary">
-                                                  View Details
-                                              </button>
-                                          </div>
-                                      </div>
-                                  </div>
+                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center md:justify-space">
+                {events.map((e, index) => (
+                    <SmallProductCard key={e} index={index} />
                 ))}
               </div>
             </div>
@@ -104,27 +91,9 @@ export default function Home() {
                         />
                     </svg>
                 </Link>
-                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center">
-                {events.map((e) => (
-                                   <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
-                                   <figure>
-                                       <img
-                                           src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                                           alt="Shoes"
-                                       />
-                                   </figure>
-                                   <div className="card-body">
-                                       <h2 className="card-title">Product</h2>
-                                       <p>
-                                           If a dog chews shoes whose shoes does he choose?
-                                       </p>
-                                       <div className="card-actions justify-end">
-                                           <button className="btn btn-primary">
-                                               View Details
-                                           </button>
-                                       </div>
-                                   </div>
-                               </div>
+                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
+                {events.map((e, index) => (
+                    <SmallProductCard key={e} index={index} />
                 ))}
               </div>
             </div>
@@ -150,30 +119,9 @@ export default function Home() {
                         />
                     </svg>
                 </Link>
-                <div  className="card-container flex flex-row gap-5 flex-wrap xs:justify-center">
-                {events.map((e) => (
-                                   <div key={e} className="card w-96 bg-base-100 shadow-xl image-full">
-                                   <figure>
-                                       <img
-                                           src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                                           alt="Shoes"
-                                       />
-                                   </figure>
-                                   <div className="card-body">
-                                       <h2 className="card-title">Event</h2>
-                                       <p>
-                                           Event Location
-                                       </p>
-                                       <p>
-                                           Event Time
-                                       </p>
-                                       <div className="card-actions justify-end">
-                                           <button className="btn btn-primary">
-                                               View Details
-                                           </button>
-                                       </div>
-                                   </div>
-                               </div>
+                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
+                {events.map((e, index) => (
+                    <SmallEventCard key={e} index={index} />
                 ))}
               </div>
             </div>
