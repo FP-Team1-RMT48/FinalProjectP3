@@ -4,8 +4,8 @@ export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { username, email, password, location, phoneNumber, isAdmin } = body;
-        await Users.register({ username, email, password, location, phoneNumber, isAdmin });
+        const { username, email, password, location, phoneNumber } = body;
+        await Users.register({ username, email, password, location, phoneNumber, isAdmin: false });
         return Response.json({ message: "User Register Successfully" });
     } catch (error) {
         if (error instanceof ZodError) {
