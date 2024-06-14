@@ -33,3 +33,5 @@ export async function fetchProductDetail(
   const data = await response.json();
   return data;
 }
+
+

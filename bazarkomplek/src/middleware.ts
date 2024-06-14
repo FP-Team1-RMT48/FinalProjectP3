@@ -38,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/api/products/add", "/api/products/edit/:slug*", "/api/products/delete/:slug*"],
+    matcher: ["/api/products/add","/my-lapak", "/api/products/edit/:slug", "/api/products/delete/:slug", "/admin-products"],
 };

@@ -31,7 +31,6 @@ export default function EventDetail({ params }: { params: { "event-slug": string
 
   useEffect(() => {
     handleFetchEvent()
-    console.log(eventSlug)
   }, [])
 
   return (

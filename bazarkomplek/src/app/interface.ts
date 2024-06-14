@@ -46,7 +46,7 @@ export type NewProduct = {
     sellerId: string;
     name: string;
     slug?: string;
-    images: string;
+    image: string;
     description: string;
     excerpt: string;
     type: string;
@@ -55,6 +55,8 @@ export type NewProduct = {
     price: number;
     eventId: ObjectId;
 };
+
+export type NewProductInput = Omit<NewProduct, "sellerId" | "slug" | "status">
 
 export type Pagination = {
     data: Product[];
