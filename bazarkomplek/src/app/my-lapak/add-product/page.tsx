@@ -1,6 +1,6 @@
 "use server"
 
-import { truncateDescription } from "@/app/action"
+import { truncateDescription } from "@/utils/truncateDescription"
 
 export default async function AddProduct(){
     const categories = ["Elektronik", "Pakaian", "Anak-anak", "Alat Rumah Tangga", "Lain-lain"]
