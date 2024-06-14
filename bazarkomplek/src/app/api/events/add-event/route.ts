@@ -1,20 +1,29 @@
-import Events from "@/db/model/event";
+import Events, { Event, createSlug } from "@/db/model/event";
+import { ZodError } from "zod";
 
 export async function POST(request: Request) {
   try {
-    const newEvent = {
-      name: "Bazaar Komplek 1",
-      location: "Jl. perumahan puncak buring indah",
-      eventImg:
-        "https://img.freepik.com/free-photo/antiques-market-objects-assortment_23-2148950948.jpg?t=st=1718095998~exp=1718099598~hmac=3a73dbd5523c1c254cfe9ccfa5c98ac28d19702e47a69ec9464e40339b72561a&w=996",
-      lapak: 0,
-      startDate: new Date(),
-      endDate: new Date(),
-    };
-    const addEvent = await Events.addEvent(newEvent)
-    return Response.json(`baik`, {status:201})
+    const body: Event = await request.json();
+    await Events.addEvent(body);
+    return Response.json({ message: "Success add new event" });
   } catch (error) {
-    console.log(error);
-    return Response.json(error);
+    if (error instanceof ZodError) {
+      const err = error.issues[0].message;
+      return Response.json({ error: err }, { status: 400 });
+    } else if (error instanceof Error) {
+      return Response.json(
+        {
+          error: error.message,
+        },
+        { status: 400 }
+      );
+    } else {
+      return Response.json(
+        {
+          error: "Internal server Error",
+        },
+        { status: 500 }
+      );
+    }
   }
 }

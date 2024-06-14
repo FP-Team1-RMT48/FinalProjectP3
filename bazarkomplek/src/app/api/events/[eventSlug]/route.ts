@@ -1,15 +1,25 @@
 import Events from "@/db/model/event";
 
-export async function GET(request: Request,  { params }: { params: { eventSlug: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { eventSlug: string } }
+) {
   try {
-    const {eventSlug} = params
+    const { eventSlug } = params;
     const event = await Events.getEventDetailBySlug(eventSlug);
-    console.log(event)
-    return Response.json({
-      data: {event},
-    }, {status:200});
+    return Response.json(
+      {
+        data: { event },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
-    return Response.json(error);
+    return Response.json(
+      {
+        error: "Internal server Error",
+      },
+      { status: 500 }
+    );
   }
 }

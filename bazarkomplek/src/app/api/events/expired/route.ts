@@ -1,14 +1,11 @@
 import Events from "@/db/model/event";
 import { NextRequest } from "next/server";
-
-
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const page = searchParams.get("page") || "1";
     const filter = searchParams.get("filter") || "";
-    const events = await Events.getAllEvents({
+    const events = await Events.getPastEvents({
       page,
       filter,
     });
@@ -16,6 +13,7 @@ export async function GET(request: NextRequest) {
       data: {events},
     });
   } catch (error) {
+    console.log(error);
     return Response.json(
       {
         error: "Internal server Error",
@@ -23,4 +21,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+  }
