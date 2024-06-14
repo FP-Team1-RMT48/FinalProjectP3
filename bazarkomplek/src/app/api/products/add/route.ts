@@ -1,9 +1,11 @@
 import Products from "@/db/model/product";
 import _ from "lodash"
+import { cookies } from "next/headers";
 import { ZodError } from "zod";
 export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
     try {
+      console.log(cookies().get("Authorization"), "api")
         const body = await request.json();
         let newProductBody = _.pick(body,["name", "image", "description", "excerpt", "type", "category", "status", "price", "eventId"]);
         const userId = request.headers.get("x-id-user") as string;

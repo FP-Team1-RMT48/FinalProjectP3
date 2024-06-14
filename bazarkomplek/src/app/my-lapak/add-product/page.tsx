@@ -1,6 +1,7 @@
 "use server"
 
 import { truncateDescription } from "@/utils/truncateDescription"
+import { cookies } from "next/headers"
 
 export default async function AddProduct(){
     const categories = ["Elektronik", "Pakaian", "Anak-anak", "Alat Rumah Tangga", "Lain-lain"]
@@ -9,6 +10,7 @@ export default async function AddProduct(){
     const handleAddProduct = async (formData: FormData) =>{
         "use server"
         try {
+            // console.log(cookies().get("Authorization"))
             const description = formData.get("description") as string;
             const data = {
                 name: formData.get("name"),
@@ -20,7 +22,7 @@ export default async function AddProduct(){
                 price: formData.get("price"),
                 eventId: "666820d37f3639f0346488c8"
             }
-            const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/products/add", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/add`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -29,7 +31,7 @@ export default async function AddProduct(){
             })
             if (!response.ok){
                 const data = await response.json()
-                console.log(data)
+                console.log(data, "<<<response")
             }
         } catch (error) {
             console.log(error)
