@@ -1,6 +1,7 @@
 "use server"
 
 import { fetchProductDetail } from "@/app/action";
+import formatCurrencyIDR from "@/utils/currencyConverter";
 
 export default async function ProductDetail({ params }: { params: { "product-slug": string } }){
     const productSlug = params["product-slug"];
@@ -16,7 +17,7 @@ export default async function ProductDetail({ params }: { params: { "product-slu
                     <div className="w-full flex flex-col gap-5">
                         <p className=" font-bold">Product Name : <span className="font-normal">{product.name}</span></p>
                         <p className=" font-bold">Product Status : <span className="font-normal">{product.status}</span></p>
-                        <p className=" font-bold">Product Price : <span className="font-normal">{product.price}</span></p>
+                        <p className=" font-bold">Product Price : <span className="font-normal">{formatCurrencyIDR(product.price)}</span></p>
                         <p className=" font-bold">Description : <span className="font-normal">{product.description}</span></p>
                     </div>
 

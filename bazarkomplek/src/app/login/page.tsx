@@ -24,7 +24,6 @@ export default function LoginPage() {
     if (!result.ok) {
       return redirect(`/login?error=${data.error}`);
     }
-
     cookies().set("Authorization", `Bearer ${data.data.access_token}`);
     return redirect("/");
   };

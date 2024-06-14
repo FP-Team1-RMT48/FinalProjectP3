@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
 import { Product } from "@/app/interface";
+import formatCurrencyIDR from "@/utils/currencyConverter";
 
 export default function SmallProductCard({
     index,
@@ -14,6 +15,7 @@ export default function SmallProductCard({
     product: Product;
     eventSlug: string;
 }) {
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -26,11 +28,12 @@ export default function SmallProductCard({
                     src={product.image}
                     alt="product image"
                     className="w-full h-full object-cover"
-                />
+                />  
             </figure>
             <div className="card-body">
                 <h2 className="card-title">{product.name}</h2>
-                <p className="">{product.price}</p>
+                <p className="">Price: {formatCurrencyIDR(product.price)}</p>
+                <p>{product.excerpt}</p>
                 <div className="card-actions justify-end">
                     {eventSlug && (
                         <Link href={`/${eventSlug}/${product.slug}`}>
