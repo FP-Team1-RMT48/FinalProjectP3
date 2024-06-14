@@ -38,5 +38,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/api/products/add"],
+    matcher: ["/api/products/add", "/api/products/edit/:slug*", "/api/products/delete/:slug*"],
 };

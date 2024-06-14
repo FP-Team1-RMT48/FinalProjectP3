@@ -40,11 +40,13 @@ export type Product = {
     eventId: ObjectId;
 };
 
+export type EditedProduct = Omit<Product, "_id" | "sellerId" | "eventId">
+
 export type NewProduct = {
     sellerId: string;
     name: string;
-    slug: string;
-    image: string;
+    slug?: string;
+    images: string;
     description: string;
     excerpt: string;
     type: string;
