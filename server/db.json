@@ -44,6 +44,7 @@
     "events": [
         {
             "name": "Bazaar Komplek 1",
+            "slug": "bazaar-komplek-1",
             "location": "Jl. perumahan puncak buring indah",
             "eventImg": "https://img.freepik.com/free-photo/antiques-market-objects-assortment_23-2148950948.jpg?t=st=1718095998~exp=1718099598~hmac=3a73dbd5523c1c254cfe9ccfa5c98ac28d19702e47a69ec9464e40339b72561a&w=996",
             "lapak": 0,
@@ -52,6 +53,7 @@
         }, 
         {
             "name": "Bazaar Komplek 2",
+            "slug": "bazaar-komplek-2",
             "location": "Jl. Blimbing Indah Megah",
             "eventImg": "https://img.freepik.com/free-photo/arrangement-antiques-market-objects_23-2148950911.jpg?t=st=1718096469~exp=1718100069~hmac=c551118598f0302fcc9078ee83a45b3e0012355236084f9572ab3de847477d00&w=996",
             "lapak": 0,
