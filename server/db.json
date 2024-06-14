@@ -149,5 +149,37 @@
             "eventId": 2,
             "price": 300000
         }
+    ],
+    "transactions": [
+        {
+            "productId":1,
+            "sellerId":2,
+            "buyerId":2,
+            "status": "COMPLETED"
+        },
+        {
+            "productId":1,
+            "sellerId":2,
+            "buyerId":2,
+            "status": "COMPLETED"
+        },
+        {
+            "productId":1,
+            "sellerId":2,
+            "buyerId":2,
+            "status": "PENDING"
+        },
+        {
+            "productId":1,
+            "sellerId":2,
+            "buyerId":2,
+            "status": "DRAFT"
+        },
+        {
+            "productId":1,
+            "sellerId":2,
+            "buyerId":2,
+            "status": "CANCELLED"
+        }
     ]
 }

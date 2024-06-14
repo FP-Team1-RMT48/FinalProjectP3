@@ -19,6 +19,7 @@ const NewEventSchema = z
     message: "filledLapakSlots should not be higher than lapakSlots",
     path: ["filledLapakSlots"],
   });
+  
 export type Event = z.infer<typeof NewEventSchema>;
 export interface EventResponse extends Event {
   _id: string;

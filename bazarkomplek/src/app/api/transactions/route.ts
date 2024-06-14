@@ -1,4 +1,4 @@
-import Events from "@/db/model/event";
+import Transactions from "@/db/model/transaction";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -6,12 +6,12 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const page = searchParams.get("page") || "1";
     const filter = searchParams.get("filter") || "";
-    const events = await Events.getAllEvents({
+    const transactions = await Transactions.getAlltransactions({
       page,
       filter,
     });
     return Response.json({
-      data: {events},
+      data: {transactions},
     });
   } catch (error) {
     return Response.json(
