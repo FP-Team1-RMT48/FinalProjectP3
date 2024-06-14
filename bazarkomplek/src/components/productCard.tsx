@@ -3,8 +3,9 @@
 import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
+import { Product } from "@/app/interface";
 
-export default function ProductCard() {
+export default function ProductCard({product}:{product: Product}) {
     return (
         <motion.div
             initial={{ opacity: 0, x: -70 }}

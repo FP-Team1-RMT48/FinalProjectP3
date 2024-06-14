@@ -1,11 +1,36 @@
 import { ObjectId } from "mongodb"
 
+export type Event = {
+    _id: string
+    name: string,
+    location: string,
+    eventImg: string,
+    startDate: string,
+    endDate: string
+    eventSlug: string,
+    filledLapakSlots: number,
+    lapakSlots: number
+}
+
+export type EventWithProducts = {
+    _id: string
+    name: string,
+    location: string,
+    eventImg: string,
+    startDate: string,
+    endDate: string
+    eventSlug: string,
+    filledLapakSlots: number,
+    lapakSlots: number,
+    EventProducts: Product[];
+}
+
 export type Product = {
     _id: ObjectId;
     sellerId: ObjectId;
     name: string;
     slug: string;
-    images: string;
+    image: string;
     description: string;
     excerpt: string;
     type: string;
@@ -19,7 +44,7 @@ export type NewProduct = {
     sellerId: string;
     name: string;
     slug: string;
-    images: string;
+    image: string;
     description: string;
     excerpt: string;
     type: string;

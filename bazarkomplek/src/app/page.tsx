@@ -1,9 +1,11 @@
+"use server"
+
 import Link from "next/link";
 import React from "react";
 import SmallProductCard from "@/components/small-productCard";
 import SmallEventCard from "@/components/small-eventCard";
 
-export default function Home() {
+export default async function Home() {
   const events = [1,2,3]
 
 
@@ -64,9 +66,9 @@ export default function Home() {
                     </svg>
                 </Link>
                 <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center md:justify-space">
-                {events.map((e, index) => (
+                {/* {events.map((e, index) => (
                     <SmallProductCard key={e} index={index} />
-                ))}
+                ))} */}
               </div>
             </div>
 
@@ -92,9 +94,9 @@ export default function Home() {
                     </svg>
                 </Link>
                 <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
-                {events.map((e, index) => (
+                {/* {events.map((e, index) => (
                     <SmallProductCard key={e} index={index} />
-                ))}
+                ))} */}
               </div>
             </div>
 
