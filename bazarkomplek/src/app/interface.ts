@@ -1,5 +1,15 @@
 import { ObjectId } from "mongodb"
 
+export type Event = {
+    name: string,
+    slug: string,
+    location: string,
+    eventImg: string,
+    lapak: number,
+    startDate: string,
+    endDate: string
+}
+
 
 export type Product = {
     _id: ObjectId;

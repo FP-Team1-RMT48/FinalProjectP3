@@ -1,9 +1,40 @@
-import ProductCards from "@/components/cards";
+'use client'
 
-export default function Home() {
-  const events = [1, 2, 3, 5, 6, 7];
-  const date = new Date();
-  const newDate = date.toISOString().split("T");
+import ProductCards from "@/components/cards";
+import { useEffect, useState } from "react";
+import { Event, Product } from "../interface";
+import ProductCard from "@/components/productCard";
+
+export default function EventDetail({ params }: { params: { "event-slug": string } }) {
+  const [event, setEvent] = useState<Event>({
+    name: "",
+    slug: "",
+    location: "",
+    eventImg: "",
+    lapak: 0,
+    startDate: "",
+    endDate: ""
+  });
+  const [products, setProducts] = useState<Product[]>([])
+  const eventSlug = params["event-slug"]
+  
+  async function fetchEvent(){
+    const response = await fetch(`http://localhost:3004/events/?slug=${eventSlug}`);
+    const data = await response.json();
+    setEvent(data[0])  
+  }
+
+  async function fetchProducts(){
+    const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/products?=1")
+    const {data} = await response.json();
+    setProducts(data)
+  }
+
+
+  useEffect(() => {
+    fetchEvent();
+    fetchProducts();
+  }, [])
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <br />
@@ -17,25 +48,25 @@ export default function Home() {
         </figure>
         <div className="card-body">
           <h2 className="card-title font-extrabold">
-            Ayo belanja di New Mexico
+            {event.name}
           </h2>
           <h3 className="font-bold">Location: </h3>
-          <p>308 Negra Arroyo Lane, Albuquerque, New Mexico.</p>
+          <p>{event.location}</p>
           <div className="card-actions justify-between">
             <div>
-              start: <span className="badge">{`${newDate[0]}`}</span>
+              start: <span className="badge">{event.startDate}</span>
             </div>
             <div>
-              end: &nbsp;<span className="badge">{`${newDate[0]}`}</span>
+              end: &nbsp;<span className="badge">{event.endDate}</span>
             </div>
           </div>
         </div>
       </div>
       <h1 className="text-base-100 text-7xl py-8">Product</h1>
       <div className="card-container flex flex-row gap-5 flex-wrap xs:justify-center md:justify-space pt-5">
-        {events.map((e) => {
-          return <ProductCards key={e} />;
-        })}
+        {/* {products.map((e, i) => {
+          return <ProductCard key={i} product={e} />;
+        })} */}
       </div>
     </main>
   );
