@@ -7,7 +7,7 @@ export default function Events() {
     const [upcomingEvents, setUpcomingEvents] = useState([])
 
     async function fetchOngoingEvents(){
-        const response = await fetch("http://localhost:3004/events")
+        const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing")
         const data = await response.json();
         setOngoingEvents(data);
         setUpcomingEvents(data)

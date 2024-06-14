@@ -10,7 +10,6 @@ export type Event = {
     endDate: string
 }
 
-
 export type Product = {
     _id: ObjectId;
     sellerId: ObjectId;
@@ -20,6 +19,7 @@ export type Product = {
     description: string;
     excerpt: string;
     type: string;
+    category: string;
     status: [string];
     price: number;
     eventId: ObjectId;
@@ -33,7 +33,8 @@ export type NewProduct = {
     description: string;
     excerpt: string;
     type: string;
-    status: [string];
+    category: string;
+    status: string;
     price: number;
     eventId: ObjectId;
 };

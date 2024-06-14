@@ -1,24 +1,6 @@
 import { NewProduct, Pagination, Product } from "@/app/interface";
 import { getCollection } from "../config";
 import { z } from "zod";
-import { ObjectId } from "mongodb";
-
-// type NewProduct = Omit<Product, "_id">
-type zodProduct = z.infer<typeof ProductSchema>
-
-const ProductSchema = z.object({
-    _id: z.string().min(1),
-    sellerId: z.string().min(1),
-    name: z.string().min(1),
-    slug: z.string().min(1),
-    images: z.string().min(1),
-    description: z.string().min(1),
-    excerpt: z.string().optional(),
-    type: z.string().min(1),
-    status: z.string().default("AVAILABLE"),
-    price: z.number().min(1),
-    eventId: z.string().optional()
-});
 
 const NewProductSchema = z.object({
     sellerId: z.string().min(1),
@@ -28,7 +10,8 @@ const NewProductSchema = z.object({
     description: z.string().min(1),
     excerpt: z.string().optional(),
     type: z.string().min(1),
-    status: z.string().default("AVAILABLE"),
+    category: z.string().min(1),
+    status: z.string().default("VERIFYING"),
     price: z.number().min(1),
     eventId: z.string().optional()
 });
