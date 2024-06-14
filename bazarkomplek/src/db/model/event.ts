@@ -54,32 +54,6 @@ export default class Events {
       {
         $limit: dataPerPage,
       },
-      {
-        $lookup: {
-          from: "Products",
-          localField: "_id",
-          foreignField: "eventId",
-          as: "EventProducts",
-        },
-      },
-      {
-        '$project': {
-          '_id': 1, 
-          'name': 1, 
-          'location': 1, 
-          'eventImg': 1, 
-          'startDate': 1, 
-          'endDate': 1, 
-          'eventSlug': 1, 
-          'filledLapakSlots': 1, 
-          'lapakSlots': 1, 
-          'EventProducts': {
-            '$slice': [
-              '$EventProducts', 3
-            ]
-          }
-        }
-      }
     ];
     const cursor = this.eventCollection().aggregate(agg);
     const events = (await cursor.toArray()) as Event[];
@@ -133,15 +107,18 @@ export default class Events {
     const today = new Date();
     const ongoingThreshold = new Date(today);
     ongoingThreshold.setDate(today.getDate() + 14);
-    
-    return events.filter(event => {
+
+    return events.filter((event) => {
       const startDate = new Date(event.startDate);
       const endDate = new Date(event.endDate);
       const beforePastEventsThreshold = new Date(endDate);
       beforePastEventsThreshold.setDate(endDate.getDate() + 7);
 
-      return (startDate <= ongoingThreshold && startDate >= today) || (today >= startDate && today <= beforePastEventsThreshold);
-  });
+      return (
+        (startDate <= ongoingThreshold && startDate >= today) ||
+        (today >= startDate && today <= beforePastEventsThreshold)
+      );
+    });
   }
 
   static async getPastEvents({
@@ -156,13 +133,13 @@ export default class Events {
     const pastThreshold = new Date(today);
     pastThreshold.setDate(today.getDate() - 7);
 
-    return events.filter(event => {
-        const endDate = new Date(event.endDate);
-        return endDate < pastThreshold;
+    return events.filter((event) => {
+      const endDate = new Date(event.endDate);
+      return endDate < pastThreshold;
     });
   }
 
-  // 4. getEventDetailBySlug→ aggregate with product
+  // 4.1 getEventDetailBySlug→ aggregate with product
   static async getEventDetailBySlug(eventSlug: string) {
     const agg = [
       {
@@ -176,6 +153,44 @@ export default class Events {
           localField: "_id",
           foreignField: "eventId",
           as: "EventProducts",
+        },
+      },
+    ];
+    const cursor = this.eventCollection().aggregate(agg);
+    const result = await cursor.toArray();
+    return result;
+  }
+  //4.2 getEventDetailBySlugLimited -> aggregate with product and limit the eventProducts displayed
+  static async getEventDetailBySlugLimited(eventSlug: string) {
+    const productDataPerPage = 2;
+    const agg = [
+      {
+        $match: {
+          eventSlug: eventSlug,
+        },
+      },
+      {
+        $lookup: {
+          from: "Products",
+          localField: "_id",
+          foreignField: "eventId",
+          as: "EventProducts",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          location: 1,
+          eventImg: 1,
+          startDate: 1,
+          endDate: 1,
+          eventSlug: 1,
+          filledLapakSlots: 1,
+          lapakSlots: 1,
+          EventProducts: {
+            $slice: ["$EventProducts", productDataPerPage], //data limit
+          },
         },
       },
     ];

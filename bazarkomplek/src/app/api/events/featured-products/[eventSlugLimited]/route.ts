@@ -2,11 +2,11 @@ import Events from "@/db/model/event";
 
 export async function GET(
   request: Request,
-  { params }: { params: { eventSlug: string } }
+  { params }: { params: { eventSlugLimited: string } }
 ) {
   try {
-    const { eventSlug } = params;
-    const event = await Events.getEventDetailBySlug(eventSlug);
+    const { eventSlugLimited } = params;
+    const event = await Events.getEventDetailBySlugLimited(eventSlugLimited);
     return Response.json(
       {
         data: { event },
