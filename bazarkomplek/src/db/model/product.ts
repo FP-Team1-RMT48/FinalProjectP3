@@ -134,7 +134,7 @@ export default class Products {
         const editedProduct = {
             ...existingProduct,
             name: updatedProductBody.name,
-            images: updatedProductBody.images,
+            images: updatedProductBody.image,
             description: updatedProductBody.description,
             excerpt: updatedProductBody.excerpt,
             type: updatedProductBody.type,
