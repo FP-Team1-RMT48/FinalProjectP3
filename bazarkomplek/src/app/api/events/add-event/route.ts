@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const body: Event = await request.json();
     await Events.addEvent(body);
-    return Response.json({ message: "Success add new event" });
+    return Response.json({ message: "Success add a new event" });
   } catch (error) {
     if (error instanceof ZodError) {
       const err = error.issues[0].message;
