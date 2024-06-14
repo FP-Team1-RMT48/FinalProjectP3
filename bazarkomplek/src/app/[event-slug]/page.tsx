@@ -2,39 +2,38 @@
 
 import ProductCards from "@/components/cards";
 import { useEffect, useState } from "react";
-import { Event, Product } from "../interface";
+import { Event, EventWithProducts, Product } from "../interface";
 import ProductCard from "@/components/productCard";
+import { fetchEventDetail } from "../action";
+import SmallProductCard from "@/components/small-productCard";
 
 export default function EventDetail({ params }: { params: { "event-slug": string } }) {
   const [event, setEvent] = useState<Event>({
-    name: "",
-    slug: "",
-    location: "",
-    eventImg: "",
-    lapak: 0,
-    startDate: "",
-    endDate: ""
+    _id: "string",
+    name: "string",
+    location: "string",
+    eventImg: "string",
+    startDate: "string",
+    endDate: "string",
+    eventSlug: "string",
+    filledLapakSlots: 0,
+    lapakSlots: 0
   });
+
   const [products, setProducts] = useState<Product[]>([])
   const eventSlug = params["event-slug"]
   
-  async function fetchEvent(){
-    const response = await fetch(`http://localhost:3004/events/?slug=${eventSlug}`);
-    const data = await response.json();
-    setEvent(data[0])  
+  const handleFetchEvent = async () => {
+    const data = await fetchEventDetail(eventSlug) as EventWithProducts;
+    setEvent(data);
+    setProducts(data.EventProducts)
   }
-
-  async function fetchProducts(){
-    const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/products?=1")
-    const {data} = await response.json();
-    setProducts(data)
-  }
-
 
   useEffect(() => {
-    fetchEvent();
-    fetchProducts();
+    handleFetchEvent()
+    console.log(eventSlug)
   }, [])
+
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <br />
@@ -64,9 +63,9 @@ export default function EventDetail({ params }: { params: { "event-slug": string
       </div>
       <h1 className="text-base-100 text-7xl py-8">Product</h1>
       <div className="card-container flex flex-row gap-5 flex-wrap xs:justify-center md:justify-space pt-5">
-        {/* {products.map((e, i) => {
-          return <ProductCard key={i} product={e} />;
-        })} */}
+        {products?.map((e, i) => {
+          return <SmallProductCard key={i} index={i} product={e} eventSlug={eventSlug}  />;
+        })}
       </div>
     </main>
   );

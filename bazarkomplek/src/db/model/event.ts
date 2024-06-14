@@ -54,6 +54,32 @@ export default class Events {
       {
         $limit: dataPerPage,
       },
+      {
+        $lookup: {
+          from: "Products",
+          localField: "_id",
+          foreignField: "eventId",
+          as: "EventProducts",
+        },
+      },
+      {
+        '$project': {
+          '_id': 1, 
+          'name': 1, 
+          'location': 1, 
+          'eventImg': 1, 
+          'startDate': 1, 
+          'endDate': 1, 
+          'eventSlug': 1, 
+          'filledLapakSlots': 1, 
+          'lapakSlots': 1, 
+          'EventProducts': {
+            '$slice': [
+              '$EventProducts', 3
+            ]
+          }
+        }
+      }
     ];
     const cursor = this.eventCollection().aggregate(agg);
     const events = (await cursor.toArray()) as Event[];

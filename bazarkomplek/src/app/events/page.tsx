@@ -9,17 +9,24 @@ export default function Events() {
     async function fetchOngoingEvents(){
         const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing")
         const data = await response.json();
-        setOngoingEvents(data);
-        setUpcomingEvents(data)
+        setOngoingEvents(data.data.events);
+
+    }
+
+    async function fetchUpcomingEvents(){
+        const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/upcoming")
+        const data = await response.json();
+        setUpcomingEvents(data.data.events)
     }
 
     useEffect(() => {
         fetchOngoingEvents();
+        fetchUpcomingEvents();
     }, [])
     return (
         <main className="flex min-h-screen flex-col items-center py-10 text-base-100">
             <p className="font-bold sm:text-xl md:text-3xl">
-                EVENT DETAILS
+                EVENTS
             </p>
 
             <p className="xs:text-sm md:text-lg font-bold pt-10 pb-4">Ongoing Events</p>

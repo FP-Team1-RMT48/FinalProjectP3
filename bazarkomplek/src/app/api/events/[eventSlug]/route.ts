@@ -1,4 +1,5 @@
 import Events from "@/db/model/event";
+import { NextRequest } from "next/server";
 
 export async function GET(
   request: Request,
