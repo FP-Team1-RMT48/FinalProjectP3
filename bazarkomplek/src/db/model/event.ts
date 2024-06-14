@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getCollection } from "../config";
 import { z } from "zod";
+import { Product } from "@/app/interface";
 const NewEventSchema = z
   .object({
     name: z.string(),
@@ -19,10 +20,11 @@ const NewEventSchema = z
     message: "filledLapakSlots should not be higher than lapakSlots",
     path: ["filledLapakSlots"],
   });
-  
+
 export type Event = z.infer<typeof NewEventSchema>;
 export interface EventResponse extends Event {
   _id: string;
+  EventProducts?: Product[];
 }
 
 export function createSlug(name: string): string {
@@ -72,6 +74,7 @@ export default class Events {
     const result = await this.getEventsWithPagination(4, page, filter);
     return result;
   }
+
   // 2. getUpcomingEvents
 
   static async getUpcomingEvents({
@@ -105,6 +108,59 @@ export default class Events {
     filter: string;
   }): Promise<Event[]> {
     const events = await this.getEventsWithPagination(4, page, filter);
+    const today = new Date();
+    const ongoingThreshold = new Date(today);
+    ongoingThreshold.setDate(today.getDate() + 14);
+
+    return events.filter((event) => {
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
+      const beforePastEventsThreshold = new Date(endDate);
+      beforePastEventsThreshold.setDate(endDate.getDate() + 7);
+
+      return (
+        (startDate <= ongoingThreshold && startDate >= today) ||
+        (today >= startDate && today <= beforePastEventsThreshold)
+      );
+    });
+  }
+
+  static async getOngoingEventsWithLimitedProducts({
+    page,
+    filter,
+  }: {
+    page: string;
+    filter: string;
+  }): Promise<Event[]> {
+    const productsDataLimit = 3
+    const agg = [
+      {
+        $lookup: {
+          from: "Products",
+          localField: "_id",
+          foreignField: "eventId",
+          as: "EventProducts",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          location: 1,
+          eventImg: 1,
+          startDate: 1,
+          endDate: 1,
+          eventSlug: 1,
+          filledLapakSlots: 1,
+          lapakSlots: 1,
+          EventProducts: {
+            $slice: ["$EventProducts", productsDataLimit],
+          },
+        },
+      },
+    ];
+    const cursor = this.eventCollection().aggregate(agg);
+    const events = (await cursor.toArray()) as EventResponse[];
     const today = new Date();
     const ongoingThreshold = new Date(today);
     ongoingThreshold.setDate(today.getDate() + 14);
@@ -163,7 +219,7 @@ export default class Events {
   }
   //4.2 getEventDetailBySlugLimited -> aggregate with product and limit the eventProducts displayed
   static async getEventDetailBySlugLimited(eventSlug: string) {
-    const productDataPerPage = 2;
+    const productsDataLimit = 2;
     const agg = [
       {
         $match: {
@@ -190,7 +246,7 @@ export default class Events {
           filledLapakSlots: 1,
           lapakSlots: 1,
           EventProducts: {
-            $slice: ["$EventProducts", productDataPerPage], //data limit
+            $slice: ["$EventProducts", productsDataLimit], //data limit
           },
         },
       },
