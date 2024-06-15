@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/navbar";
-
+import Navbar, { AdminNavbar } from "@/components/navbar";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Bazar Komplek",
@@ -13,12 +13,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let adminPage = false;
+  let logOn = false;
+  const isAdmin = cookies().get("isAdmin");
+  const cookie = cookies().get("Authorization");
+
+  if (isAdmin?.name) adminPage = true;
+  if (cookie?.name) logOn = true;
+
   return (
     <html lang="en">
       <body className="bg-white">
-        <Navbar />
+        {adminPage ? <AdminNavbar /> : <Navbar logOn={logOn} />}
         {children}
-        </body>
+      </body>
     </html>
   );
 }

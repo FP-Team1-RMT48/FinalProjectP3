@@ -1,4 +1,5 @@
 import ProductCardWithEdit from "@/components/productCardWithEditBtn";
+import Link from "next/link";
 
 export default function MyLapak() {
     const products =[1,2,3,4,5]
@@ -17,7 +18,7 @@ export default function MyLapak() {
                 </button>
             </div>
 
-            <button className="bg-base-100 text-white text-xl font-bold py-3 px-10 rounded-lg">Add Product</button>
+            <Link href={"/my-lapak/add-product"}><button className="bg-base-100 text-white text-xl font-bold py-3 px-10 rounded-lg">Add Product</button></Link>
 
             {products.map((e) => (
                 <ProductCardWithEdit key={e} />
