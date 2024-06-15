@@ -5,9 +5,11 @@ import { ZodError } from "zod";
 export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
     try {
-      console.log(cookies().get("Authorization"), "api")
         const body = await request.json();
         let newProductBody = _.pick(body,["name", "image", "description", "excerpt", "type", "category", "status", "price", "eventId"]);
+        if (typeof newProductBody.price === 'string') {
+          newProductBody.price = parseFloat(newProductBody.price);
+      }
         const userId = request.headers.get("x-id-user") as string;
         newProductBody = newProductBody.status ? newProductBody : { ...newProductBody, status: "VERIFYING" }
         const result = await Products.addProduct({ sellerId: userId, ...newProductBody, status: "VERIFYING" })

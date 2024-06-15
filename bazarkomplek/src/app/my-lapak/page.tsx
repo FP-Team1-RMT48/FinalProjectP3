@@ -1,3 +1,5 @@
+"use client"
+
 import ProductCardWithEdit from "@/components/productCardWithEditBtn";
 import Link from "next/link";
 

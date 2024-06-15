@@ -4,10 +4,15 @@ import Link from "next/link";
 import React from "react";
 import SmallProductCard from "@/components/small-productCard";
 import SmallEventCard from "@/components/small-eventCard";
+import { fetchOngoingEventsForHomepage, fetchUpcomingEvents } from "./action";
 
 export default async function Home() {
-  const events = [1,2,3]
 
+    const ongoingEvents = await fetchOngoingEventsForHomepage();
+    let upcomingEvents = await fetchUpcomingEvents();
+    if (upcomingEvents.length > 3) {
+        upcomingEvents = upcomingEvents.slice(0, 3);
+    }
 
     return (
         <main className="flex min-h-screen flex-col justify-between gap-10 pb-10">
@@ -43,62 +48,36 @@ export default async function Home() {
                     </div>
                 </div>
             </div>
+            {ongoingEvents?.map((e) => (
+                            <div key={e.eventSlug} className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
+                            <Link
+                                href={`/${e.eventSlug}`}
+                                className="text-base-100 flex flex-row items-center gap-1"
+                            >
+                                <p className="">{e.name}</p>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="size-4"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                                    />
+                                </svg>
+                            </Link>
+                            <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center md:justify-space">
+                            {e.EventProducts.map((product, index) => (
+                                <SmallProductCard product={product} eventSlug={e.eventSlug} key={index} index={index} />
+                            ))}
+                          </div>
+                        </div>
+            ))}
 
-            <div className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
-                <Link
-                    href={""}
-                    className="text-base-100 flex flex-row items-center gap-1"
-                >
-                    <p className=""> Event 1</p>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-4"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                        />
-                    </svg>
-                </Link>
-                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center md:justify-space">
-                {/* {events.map((e, index) => (
-                    <SmallProductCard key={e} index={index} />
-                ))} */}
-              </div>
-            </div>
-
-            <div className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
-                <Link
-                    href={""}
-                    className="text-base-100 flex flex-row items-center gap-1"
-                >
-                    <p className=""> Event 2</p>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-4"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                        />
-                    </svg>
-                </Link>
-                <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
-                {/* {events.map((e, index) => (
-                    <SmallProductCard key={e} index={index} />
-                ))} */}
-              </div>
-            </div>
 
             <div className="event-container flex flex-col mx-5 p-4 shadow-xl gap-4">
                 <Link
@@ -122,8 +101,8 @@ export default async function Home() {
                     </svg>
                 </Link>
                 <div  className="card-container flex flex-row gap-5 py-6 flex-wrap xs:justify-center">
-                {events.map((e, index) => (
-                    <SmallEventCard key={e} index={index} />
+                {upcomingEvents?.map((e, index) => (
+                    <SmallEventCard event={e} key={index} index={index} />
                 ))}
               </div>
             </div>

@@ -20,9 +20,11 @@ export async function fetchEventDetail(
   return data.data.event[0];
 }
 
-// export async function fetchEventsForHomepage(){
-//   const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + `api/events/${eventSlug}`)
-// }
+export async function fetchOngoingEventsForHomepage():Promise<EventWithProducts[]>{
+  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + `api/featured-events`);
+  const data = await response.json();
+  return data.data.events
+}
 
 export async function fetchProductDetail(
   productSlug: string
@@ -34,4 +36,16 @@ export async function fetchProductDetail(
   return data;
 }
 
+export async function fetchOngoingEvents():Promise<Event[]>{
+  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing")
+  const data = await response.json();
+  return data.data.events;
+
+}
+
+export async function fetchUpcomingEvents():Promise<Event[]>{
+  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/upcoming")
+  const data = await response.json();
+  return data.data.events
+}
 

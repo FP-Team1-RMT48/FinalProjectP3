@@ -10,9 +10,8 @@ export async function PUT(request: NextRequest) {
         const urlParts = request.nextUrl.pathname.split("/");
         const slug = urlParts[urlParts.length - 1];
         const body = await request.json();
-        let updatedProductBody = _.pick(body, ["name", "slug", "images", "description", "excerpt", "type", "category", "status", "price"]);
+        let updatedProductBody = _.pick(body, ["name", "slug", "image", "description", "excerpt", "type", "category", "status", "price"]);
         const userId = request.headers.get("x-id-user") as string;
-
         const result = await Products.editProduct(slug, updatedProductBody, userId);
         return NextResponse.json({ result }, { status: 200 });
     } catch (error: any) {

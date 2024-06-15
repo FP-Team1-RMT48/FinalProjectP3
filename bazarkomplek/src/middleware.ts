@@ -24,10 +24,11 @@ export async function middleware(request: NextRequest) {
         role: string;
     }>(token);
     const requestHeaders = new Headers(request.headers);
-
+    console.log(decodeToken, "middleware")
     requestHeaders.set("x-id-user", decodeToken._id);
     requestHeaders.set("x-id-email", decodeToken.email);
 
+    console.log()
     const response = NextResponse.next({
         request: {
             headers: requestHeaders,
@@ -38,5 +39,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/api/products/add","/my-lapak", "/api/products/edit/:slug", "/api/products/delete/:slug", "/admin-products"],
+    matcher: ["/api/products/add","/my-lapak:path*", "/api/products/edit/:slug*", "/api/products/delete/:slug", "/admin-products"],
 };

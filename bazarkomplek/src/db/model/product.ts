@@ -4,17 +4,17 @@ import { z } from "zod";
 import { ObjectId } from "mongodb";
 
 const NewProductSchema = z.object({
-    sellerId: z.string().min(1),
-    name: z.string().min(1),
-    slug: z.string().min(1),
-    images: z.string().min(1),
-    description: z.string().min(1),
+    sellerId: z.string({ message: "Seller ID is required" }).min(1, { message: "Seller ID is required" }),
+    name: z.string({ message: "Product name is required" }).min(1, { message: "Product name is required" }),
+    slug: z.string({ message: "Product slug is required" }).min(1, { message: "Product slug is required" }),
+    image: z.string({ message: "Product image is required" }).min(1, { message: "Product image is required" }),
+    description: z.string({ message: "Product description is required" }).min(1, { message: "Product description is required" }),
     excerpt: z.string().optional(),
-    type: z.string().min(1),
-    category: z.string().min(1),
+    type: z.string({ message: "Product type is required" }).min(1, { message: "Product type is required" }),
+    category: z.string({ message: "Product category is required" }).min(1, { message: "Product category is required" }),
     status: z.string().default("VERIFYING"),
-    price: z.number().min(1),
-    eventId: z.string().optional()
+    price: z.number({ message: "Price must be a positive number" }).min(1, { message: "Price must be a positive number" }),
+    eventId: z.string().optional(),
 });
 
 export function createSlug(name: string): string {
@@ -124,7 +124,6 @@ export default class Products {
 
     static async editProduct(slug: string, updatedProductBody: EditedProduct, userId: string) {
         const existingProduct = await this.collection().findOne({ slug });
-        // console.log(existingProduct)
         if (!existingProduct) {
             throw new Error("Product not found");
         }
@@ -134,7 +133,7 @@ export default class Products {
         const editedProduct = {
             ...existingProduct,
             name: updatedProductBody.name,
-            images: updatedProductBody.image,
+            image: updatedProductBody.image,
             description: updatedProductBody.description,
             excerpt: updatedProductBody.excerpt,
             type: updatedProductBody.type,
