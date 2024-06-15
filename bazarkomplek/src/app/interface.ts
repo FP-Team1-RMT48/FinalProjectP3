@@ -40,6 +40,14 @@ export type Product = {
     eventId: ObjectId;
 };
 
+export type Transaction = {
+    _id: ObjectId;
+    productId: ObjectId;
+    buyerId: ObjectId;
+    sellerId: ObjectId;
+    status: [string];
+};
+
 export type EditedProduct = Omit<Product, "_id" | "sellerId" | "eventId">
 
 export type NewProduct = {
@@ -57,7 +65,7 @@ export type NewProduct = {
 };
 
 export type Pagination = {
-    data: Product[];
+    data: Product[] | Transaction[];
     currentPage: number;
     currentData: number;
     totalData: number;

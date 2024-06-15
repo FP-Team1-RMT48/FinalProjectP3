@@ -1,24 +1,16 @@
 import Transactions from "@/db/model/transaction";
-import { NextRequest } from "next/server";
-
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
-    const page = searchParams.get("page") || "1";
-    const filter = searchParams.get("filter") || "";
-    const transactions = await Transactions.getAlltransactions({
-      page,
-      filter,
-    });
-    return Response.json({
-      data: {transactions},
-    });
-  } catch (error) {
-    return Response.json(
-      {
-        error: "Internal server Error",
-      },
-      { status: 500 }
-    );
-  }
+export const dynamic = "force-dynamic";
+export async function GET(request: Request) {
+    try {
+        const userId = request.headers.get('x-id-user');
+        if (!userId) {
+            return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
+        }
+        const page = parseInt(request.url.split("?")[1].split("=")[1]) - 1;
+        const result = await Transactions.findAll(Number(page), userId);
+        return Response.json(result);
+    } catch (error) {
+        console.log(error)
+        return Response.json(error)
+    }
 }
