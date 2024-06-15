@@ -84,7 +84,7 @@ export default class Products {
     }
 
     static async addProduct(newProduct: NewProduct) {
-        const addedProduct = {
+        let addedProduct = {
             ...newProduct,
             slug: createSlug(newProduct.name),
         };
@@ -100,8 +100,8 @@ export default class Products {
         if (isProductSlugExist) {
             throw new Error("product name already exist");
         }
-
-        await this.collection().insertOne(addedProduct);
+        
+        await this.collection().insertOne({...addedProduct, sellerId: new ObjectId(addedProduct.sellerId)});
 
         return { message: "Success add new Product" }
     }
@@ -166,5 +166,16 @@ export default class Products {
         const deleteResult = await this.collection().deleteOne({ slug, sellerId: userId });
         console.log(`Delete result: ${JSON.stringify(deleteResult)}`);
         return { message: "Product deleted successfully" };
+    }
+
+    static async getProductBySellerId(sellerId: string) {
+        console.log(typeof sellerId)
+        const allowedStatuses = ["AVAILABLE", "VERIFYING", "UNAVAILABLE"];
+        const products = await this.collection().find({
+            sellerId: sellerId,
+            status: { $in: allowedStatuses },
+        }).toArray();
+        console.log(sellerId)
+        return products;
     }
 }
