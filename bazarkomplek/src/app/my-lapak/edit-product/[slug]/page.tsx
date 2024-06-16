@@ -2,9 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import { truncateDescription } from '@/utils/truncateDescription';
-import { Event } from '@/app/interface';
+import { ConfirmationModalProps, Event } from '@/app/interface';
 import { fetchProductDetail, fetchUpcomingEvents } from '@/app/action';
 import { useRouter } from 'next/navigation';
+
+
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose, onConfirm }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-10 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none">
+            <div className="relative w-auto max-w-lg mx-auto my-6 bg-white rounded-lg shadow-lg">
+                <div className="flex items-start justify-between p-5 border-b border-solid rounded-t-lg border-blueGray-200">
+                    <h3 className="text-2xl font-semibold">Confirmation</h3>
+                    <button onClick={onClose} className="text-black close-modal text-3xl">&times;</button>
+                </div>
+                <div className="relative p-6 flex-auto">
+                    <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
+                        Are you sure you want to mark this product as <span className="font-bold">Unavailable</span>? This action is irreversible
+                    </p>
+                    <div className="flex justify-end mt-6">
+                        <button onClick={onClose} className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none mr-1 mb-1 ease-linear transition-all duration-150">Cancel</button>
+                        <button onClick={onConfirm} className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none mr-1 mb-1 ease-linear transition-all duration-150">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default function EditProduct({ params }: { params: { "slug": string } }) {
     const {slug} = params;
@@ -18,8 +43,9 @@ export default function EditProduct({ params }: { params: { "slug": string } }) 
         category: '',
         price: '',
         eventId: '',
+        status: ''
     });
-
+    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
     const router = useRouter();
 
@@ -30,10 +56,10 @@ export default function EditProduct({ params }: { params: { "slug": string } }) 
 
     const fetchProduct = async () => {
         const data = await fetchProductDetail(slug);
-        const {name, image, description, type, category, price, eventId} = data
-        const priceString = typeof price === 'number' ? price.toString() : '';
+        const {name, image, description, type, category, price, eventId, status} = data
+        const priceString = price.toString();
         const eventIdString = eventId.toString();
-        setFormData({name, image, description, type, category, price: priceString, eventId: eventIdString})
+        setFormData({name, image, description, type, category, price: priceString, eventId: eventIdString, status})
     }
 
     const handleChange = (e: any) => {
@@ -44,15 +70,8 @@ export default function EditProduct({ params }: { params: { "slug": string } }) 
         }));
     };
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
+    const submitForm = async (data: any) => {
         try {
-            const description = formData.description;
-            const data = {
-                ...formData,
-                excerpt: await truncateDescription(description),
-            };
-            console.log(data)
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products/edit/${slug}`, {
                 method: 'PUT',
                 headers: {
@@ -67,6 +86,24 @@ export default function EditProduct({ params }: { params: { "slug": string } }) 
                 return console.log(data, '<<<response');
             }
             router.push('/my-lapak');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const description = formData.description;
+            const data = {
+                ...formData,
+                excerpt: await truncateDescription(description),
+            };
+            if (formData.status === 'UNAVAILABLE') {
+                setShowConfirmationModal(true);
+            } else {
+             await submitForm(data)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -125,12 +162,30 @@ export default function EditProduct({ params }: { params: { "slug": string } }) 
                         </select>
                     </div>
                 </div>
+
+                <div className="flex flex-col gap-1 xs:w-5/6 xs:self-center lg:w-5/12 ">
+                        <label htmlFor="status" className="text-xs pl-2 text-white lg:text-base">Select Product Status</label>
+                        <select id="eventId" onChange={handleChange} value={formData.status} name="status" className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg">
+                            <option value="VERIFYING">AVAILABLE</option>
+                            <option value="UNAVAILABLE">UNAVAILABLE</option>
+                        </select>
+                    </div>
+
                 <div className="flex flex-col gap-1 xs:w-5/6 xs:self-center lg:w-8/12 ">
                     <label htmlFor="description" className="text-xs pl-2 text-white lg:text-base">Product Description</label>
                     <textarea id="description" name="description" value={formData.description} onChange={handleChange} className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg" />
                 </div>
                 <button type="submit" className="bg-white rounded-lg w-3/6 xs:w-2/6 self-center p-2 mt-4">Edit Product</button>
             </form>
+
+            <ConfirmationModal
+                isOpen={showConfirmationModal}
+                onClose={() => setShowConfirmationModal(false)}
+                onConfirm={() => {
+                    submitForm(formData);
+                    setShowConfirmationModal(false); 
+                }}
+            />
         </main>
     );
 }

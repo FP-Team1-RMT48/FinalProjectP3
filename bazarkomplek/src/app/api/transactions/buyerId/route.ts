@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     console.log(request)
     try {
         const buyerId = request.headers.get('x-id-user');
-
+        console.log(buyerId, "<<buyerId")
         if (!buyerId) {
             return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }

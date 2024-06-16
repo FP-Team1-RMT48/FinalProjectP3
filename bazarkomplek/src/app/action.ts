@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Event, EventWithProducts, Product } from "./interface";
+import { Event, EventWithProducts, Product, productWithUser } from "./interface";
 
 export async function logout() {
   cookies().delete("Authorization");
@@ -28,7 +28,7 @@ export async function fetchOngoingEventsForHomepage():Promise<EventWithProducts[
 
 export async function fetchProductDetail(
   productSlug: string
-): Promise<Product> {
+): Promise<productWithUser> {
   const response = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + `api/products/${productSlug}`
   );
@@ -48,4 +48,3 @@ export async function fetchUpcomingEvents():Promise<Event[]>{
   const data = await response.json();
   return data.data.events
 }
-
