@@ -64,7 +64,7 @@ export function Map() {
       );
       setAutoComplete(gAutoComplete);
       setMap(gMap);
-      console.log({})
+    
     }
   }, [isLoaded]);
 
@@ -78,6 +78,7 @@ export function Map() {
           //place a marker
           setMarker(position, place.name!);
         }
+        console.log({position},`<<<<<,AAA`)
       });
     }
   }, [autoComplete]);
@@ -91,6 +92,7 @@ export function Map() {
       position: location,
       title: "Marker",
     });
+    
     const infoCard = new google.maps.InfoWindow({
       position: location,
       content: buildMapInfoCardContent(name, name),
