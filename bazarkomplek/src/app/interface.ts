@@ -12,6 +12,15 @@ export type Event = {
     lapakSlots: number
 }
 
+export type User = {
+    _id: ObjectId,
+    username: string,
+    email:string,
+    location: string,
+    phoneNumber: string,
+    isAdmin: boolean
+}
+
 export type EventWithProducts = {
     _id: string
     name: string,
@@ -35,9 +44,17 @@ export type Product = {
     excerpt: string;
     type: string;
     category: string;
-    status: [string];
+    status: string;
     price: number;
     eventId: ObjectId;
+};
+
+export type productWithEvent = Product & {
+    event: Event;
+};
+
+export type productWithUser = Product & {
+    user: User;
 };
 
 export type Transaction = {
@@ -80,3 +97,9 @@ export type Myresponse<T = null> = {
     error?: string[]
     message: string;
 }
+
+export type ConfirmationModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+};

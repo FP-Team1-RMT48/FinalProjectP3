@@ -1,32 +1,55 @@
-import { EditedProduct, NewProduct, Pagination, Product } from "@/app/interface";
+import {
+    EditedProduct,
+    NewProduct,
+    Pagination,
+    Product,
+} from "@/app/interface";
 import { getCollection } from "../config";
 import { z } from "zod";
 import { ObjectId } from "mongodb";
 
 const NewProductSchema = z.object({
-    sellerId: z.string().min(1),
-    name: z.string().min(1),
-    slug: z.string().min(1),
-    images: z.string().min(1),
-    description: z.string().min(1),
+    sellerId: z
+        .string({ message: "Seller ID is required" })
+        .min(1, { message: "Seller ID is required" }),
+    name: z
+        .string({ message: "Product name is required" })
+        .min(1, { message: "Product name is required" }),
+    slug: z
+        .string({ message: "Product slug is required" })
+        .min(1, { message: "Product slug is required" }),
+    image: z
+        .string({ message: "Product image is required" })
+        .min(1, { message: "Product image is required" }),
+    description: z
+        .string({ message: "Product description is required" })
+        .min(1, { message: "Product description is required" }),
     excerpt: z.string().optional(),
-    type: z.string().min(1),
-    category: z.string().min(1),
+    type: z
+        .string({ message: "Product type is required" })
+        .min(1, { message: "Product type is required" }),
+    category: z
+        .string({ message: "Product category is required" })
+        .min(1, { message: "Product category is required" }),
     status: z.string().default("VERIFYING"),
-    price: z.number().min(1),
-    eventId: z.string().optional()
+    price: z
+        .number({ message: "Price must be a positive number" })
+        .min(1, { message: "Price must be a positive number" }),
+    eventId: z.any().refine((val) => val !== null && val !== undefined, {
+        message: "Event ID cannot be null or undefined",
+    }),
 });
 
 export function createSlug(name: string): string {
     return name
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "");
-  }
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
+}
 
 export default class Products {
     static collection() {
-        return getCollection('Products')
+        return getCollection("Products");
     }
 
     static async findAll(page: number) {
@@ -52,21 +75,24 @@ export default class Products {
                 $limit: dataPage,
             },
             {
-                $lookup:
-                    {
-                        from: "Events",
-                        localField: "eventId",
-                        foreignField: "_id",
-                        as: "eventDetails",
-                    },
+                $lookup: {
+                    from: "Events",
+                    localField: "eventId",
+                    foreignField: "_id",
+                    as: "eventDetails",
+                },
             },
         ];
 
-        const totalData = await this.collection().aggregate(aggregateTotalData).toArray();
-        const products = (await this.collection().aggregate(aggregate).toArray()) as Product[];
-        
+        const totalData = await this.collection()
+            .aggregate(aggregateTotalData)
+            .toArray();
+        const products = (await this.collection()
+            .aggregate(aggregate)
+            .toArray()) as Product[];
+
         let currentPage = page + 1;
-        let totalPage = Math.ceil(totalData[0].count / dataPage)
+        let totalPage = Math.ceil(totalData[0].count / dataPage);
         const result: Pagination = {
             data: products,
             currentPage: currentPage,
@@ -79,7 +105,28 @@ export default class Products {
     }
 
     static async findBySlug(slug: string) {
-        const product = await this.collection().findOne({ slug });
+        const agg = [
+            {
+                $match: {
+                    slug: slug,
+                },
+            },
+            {
+                $lookup: {
+                    from: "Users",
+                    localField: "sellerId",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$user",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+        ];
+        const product = await this.collection().aggregate(agg).toArray();
         return product;
     }
 
@@ -89,25 +136,30 @@ export default class Products {
             slug: createSlug(newProduct.name),
         };
 
-        const parseResult = NewProductSchema.safeParse(addedProduct)
+        const parseResult = NewProductSchema.safeParse(addedProduct);
         if (!parseResult.success) {
-            throw parseResult.error
+            throw parseResult.error;
         }
-        
+
         const isProductSlugExist = await this.collection().findOne({
             slug: addedProduct.slug,
         });
         if (isProductSlugExist) {
             throw new Error("product name already exist");
         }
-        
-        await this.collection().insertOne({...addedProduct, sellerId: new ObjectId(addedProduct.sellerId)});
 
-        return { message: "Success add new Product" }
+        await this.collection().insertOne({
+            ...addedProduct,
+            sellerId: new ObjectId(addedProduct.sellerId),
+        });
+
+        return { message: "Success add new Product" };
     }
 
     static async getProductByName(searchKey: string) {
-        const products = (await this.collection().find({ name: { $regex: searchKey, $option: "i" } }).toArray()) as Product[];
+        const products = (await this.collection()
+            .find({ name: { $regex: searchKey, $option: "i" } })
+            .toArray()) as Product[];
 
         return products;
     }
@@ -118,23 +170,28 @@ export default class Products {
                 $limit: 5,
             },
         ];
-        const products = (await this.collection().aggregate(aggregate).toArray()) as Product[];
+        const products = (await this.collection()
+            .aggregate(aggregate)
+            .toArray()) as Product[];
         return products;
     }
 
-    static async editProduct(slug: string, updatedProductBody: EditedProduct, userId: string) {
+    static async editProduct(
+        slug: string,
+        updatedProductBody: EditedProduct,
+        userId: string
+    ) {
         const existingProduct = await this.collection().findOne({ slug });
-        // console.log(existingProduct)
         if (!existingProduct) {
             throw new Error("Product not found");
         }
-        if (existingProduct.sellerId !== userId) {
+        if (existingProduct.sellerId.toString() !== userId) {
             throw new Error("User not authorized to edit this product");
         }
         const editedProduct = {
             ...existingProduct,
             name: updatedProductBody.name,
-            images: updatedProductBody.image,
+            image: updatedProductBody.image,
             description: updatedProductBody.description,
             excerpt: updatedProductBody.excerpt,
             type: updatedProductBody.type,
@@ -143,40 +200,59 @@ export default class Products {
             price: updatedProductBody.price,
             slug: createSlug(updatedProductBody.name),
         };
-        console.log(editedProduct)
         NewProductSchema.partial().parse({ editedProduct });
-        console.log(updatedProductBody, "<<<<<<<")
-        await this.collection().updateOne(
-            { slug },
-            { $set: editedProduct }
-        );
+        await this.collection().updateOne({ slug }, { $set: editedProduct });
 
         return { message: "Product updated successfully" };
     }
 
     static async deleteProduct(slug: string, userId: string) {
-        console.log(`Deleting product with slug: ${slug} and userId: ${userId}`);
+        console.log(
+            `Deleting product with slug: ${slug} and userId: ${userId}`
+        );
         const existingProduct = await this.collection().findOne({ slug });
         if (!existingProduct) {
             throw new Error("Product not found");
         }
-        if (existingProduct.sellerId !== userId) {
+        if (existingProduct.sellerId.toString() !== userId) {
             throw new Error("User not authorized to delete this product");
         }
 
-        const deleteResult = await this.collection().deleteOne({ slug, sellerId: userId });
+        const deleteResult = await this.collection().deleteOne({
+            slug,
+            sellerId: new ObjectId(userId),
+        });
         console.log(`Delete result: ${JSON.stringify(deleteResult)}`);
         return { message: "Product deleted successfully" };
     }
 
     static async getProductBySellerId(sellerId: string) {
-        console.log(typeof sellerId)
         const allowedStatuses = ["AVAILABLE", "VERIFYING", "UNAVAILABLE"];
-        const products = await this.collection().find({
-            sellerId: sellerId,
-            status: { $in: allowedStatuses },
-        }).toArray();
-        console.log(sellerId)
+        const agg = [
+            {
+                $match: {
+                    sellerId: new ObjectId(sellerId),
+                    status: {
+                        $in: allowedStatuses,
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "Events",
+                    localField: "eventId",
+                    foreignField: "_id",
+                    as: "event",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$event",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+        ];
+        const products = await this.collection().aggregate(agg).toArray();
         return products;
     }
 }
