@@ -1,13 +1,23 @@
-"use server"
+"use client"
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import SmallProductCard from "@/components/small-productCard";
 import SmallEventCard from "@/components/small-eventCard";
 
 export default async function Home() {
   const events = [1,2,3]
-
+    useEffect(()=>{
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else { 
+           console.log("Geolocation is not supported by this browser.");
+          }
+          function showPosition(position) {
+            console.log("Latitude: " + position.coords.latitude + typeof  position.coords.latitude +
+            "Longitude: " + position.coords.longitude)
+          }
+    },[])
 
     return (
         <main className="flex min-h-screen flex-col justify-between gap-10 pb-10">
