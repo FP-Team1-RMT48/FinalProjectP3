@@ -85,6 +85,9 @@ export function AdminNavbar() {
         <Link href={"/admin-events"} className="hidden md:block">
           Events
         </Link>
+        <Link href={"/admin-events/add-event"} className="hidden md:block">
+          Add Event
+        </Link>
         <LogoutBtn />
       </div>
     </header>
