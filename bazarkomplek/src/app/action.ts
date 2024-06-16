@@ -2,7 +2,13 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Event, EventWithProducts, Product, productWithUser } from "./interface";
+import {
+  Event,
+  EventWithProducts,
+  Product,
+  productWithUser,
+} from "./interface";
+import { revalidatePath } from "next/cache";
 
 export async function logout() {
   cookies().delete("Authorization");
@@ -20,10 +26,14 @@ export async function fetchEventDetail(
   return data.data.event[0];
 }
 
-export async function fetchOngoingEventsForHomepage():Promise<EventWithProducts[]>{
-  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + `api/featured-events`);
+export async function fetchOngoingEventsForHomepage(): Promise<
+  EventWithProducts[]
+> {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + `api/featured-events`
+  );
   const data = await response.json();
-  return data.data.events
+  return data.data.events;
 }
 
 export async function fetchProductDetail(
@@ -36,15 +46,30 @@ export async function fetchProductDetail(
   return data;
 }
 
-export async function fetchOngoingEvents():Promise<Event[]>{
-  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing")
+export async function fetchOngoingEvents(): Promise<Event[]> {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing"
+  );
   const data = await response.json();
   return data.data.events;
-
 }
 
-export async function fetchUpcomingEvents():Promise<Event[]>{
-  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/upcoming")
+export async function fetchUpcomingEvents(): Promise<Event[]> {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + "api/events/upcoming"
+  );
   const data = await response.json();
-  return data.data.events
+  return data.data.events;
+}
+
+export async function addEvent(formData: Event) {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/events/add-event`, {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  revalidatePath("/", "layout");
+  redirect("/admin-events");
 }
