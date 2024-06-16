@@ -29,6 +29,7 @@ export function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
   const placesAutocomplete = useRef<HTMLInputElement>(null);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
+  
   useEffect(() => {
     if (isLoaded) {
       //map options
@@ -63,7 +64,7 @@ export function Map() {
       );
       setAutoComplete(gAutoComplete);
       setMap(gMap);
-      console.log(gMap, gAutoComplete, google.maps.LatLng)
+      console.log({})
     }
   }, [isLoaded]);
 
