@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.6",
+    "@react-google-maps/api": "^2.19.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "bcryptjs": "^2.4.3",
@@ -21,10 +23,12 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-google-places-autocomplete": "^4.0.1",
     "react-infinite-scroll-component": "^6.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.55.9",
     "@types/lodash": "^4.17.5",
     "@types/node": "^20",
     "@types/react": "^18",

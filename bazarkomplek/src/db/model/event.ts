@@ -23,8 +23,8 @@ const NewEventSchema = z
 
 export type Event = z.infer<typeof NewEventSchema>;
 export interface EventResponse extends Event {
-  _id: string;
-  EventProducts?: Product[];
+  _id: string | ObjectId;
+  EventProducts?: Product[] | null;
 }
 
 export function createSlug(name: string): string {
@@ -76,24 +76,38 @@ export default class Events {
   }
 
   // 2. getUpcomingEvents
-
   static async getUpcomingEvents({
     page,
     filter,
   }: {
     page: string;
     filter: string;
-  }): Promise<Event[]> {
+  }): Promise<EventResponse[]> {
     try {
-      const events = await this.getEventsWithPagination(4, page, filter);
+      //upcoming threshold
       const today = new Date();
       const upcomingThreshold = new Date(today);
       upcomingThreshold.setDate(today.getDate() + 30);
 
-      return events.filter((event) => {
-        const startDate = new Date(event.startDate);
-        return startDate > upcomingThreshold;
-      });
+      //aggregation
+      const dataPerPage = 4;
+      const agg = [
+        {
+          $match: {
+            startDate: { $gt: upcomingThreshold.toISOString() },
+          },
+        },
+        {
+          $skip: (+page - 1) * dataPerPage,
+        },
+        {
+          $limit: dataPerPage,
+        },
+      ];
+      const events = (await this.eventCollection()
+        .aggregate(agg)
+        .toArray()) as EventResponse[];
+      return events;
     } catch (error) {
       console.error("Error fetching upcoming events:", error);
       throw error;
@@ -132,7 +146,7 @@ export default class Events {
     page: string;
     filter: string;
   }): Promise<Event[]> {
-    const productsDataLimit = 3
+    const productsDataLimit = 3;
     const agg = [
       {
         $lookup: {

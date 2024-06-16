@@ -1,11 +1,11 @@
-import Events from "@/db/model/event";
+import Events, { EventResponse } from "@/db/model/event";
 import { NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const page = searchParams.get("page") || "1";
     const filter = searchParams.get("filter") || "";
-    const events = await Events.getUpcomingEvents({
+    const events: EventResponse[] = await Events.getUpcomingEvents({
       page,
       filter,
     });

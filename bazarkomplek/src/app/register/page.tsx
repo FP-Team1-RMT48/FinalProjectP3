@@ -85,6 +85,7 @@ export default function RegisterPage() {
               <label className="flex items-center gap-2 text-primary justify-center font-bold">
                 Address
               </label>
+
               <input
                 type="text"
                 id="location"
