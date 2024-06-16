@@ -1,27 +1,26 @@
 "use client"
 import EventCard from "@/components/eventCard";
 import { useEffect, useState } from "react";
+import { fetchOngoingEvents, fetchUpcomingEvents } from "../action";
+import { Event } from "../interface";
 
 export default function Events() {
-    const [ongoingEvents, setOngoingEvents] = useState([])
-    const [upcomingEvents, setUpcomingEvents] = useState([])
+    const [ongoingEvents, setOngoingEvents] = useState<Event[]>([])
+    const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([])
 
-    async function fetchOngoingEvents(){
-        const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing")
-        const data = await response.json();
-        setOngoingEvents(data.data.events);
-
+    const getOngoingEvents = async () => {
+        const data = await fetchOngoingEvents();
+        setOngoingEvents(data);
     }
 
-    async function fetchUpcomingEvents(){
-        const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/upcoming")
-        const data = await response.json();
-        setUpcomingEvents(data.data.events)
+    const getUpcomingEvents = async () => {
+        const data = await fetchUpcomingEvents();
+        setUpcomingEvents(data);
     }
 
     useEffect(() => {
-        fetchOngoingEvents();
-        fetchUpcomingEvents();
+        getOngoingEvents();
+        getUpcomingEvents();
     }, [])
     return (
         <main className="flex min-h-screen flex-col items-center py-10 text-base-100">

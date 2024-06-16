@@ -33,7 +33,6 @@ export default function SmallProductCard({
             <div className="card-body">
                 <h2 className="card-title">{product.name}</h2>
                 <p className="">Price: {formatCurrencyIDR(product.price)}</p>
-                <p>{product.excerpt}</p>
                 <div className="card-actions justify-end">
                     {eventSlug && (
                         <Link href={`/${eventSlug}/${product.slug}`}>

@@ -1,7 +1,26 @@
+"use client"
 import ProductCard from "@/components/productCard";
+import { useEffect, useState } from "react";
 
 export default function MyOrders() {
-    const orders = [1,2,3,4,5]
+    const [orders, setOrders] = useState([]);
+
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/transactions/buyerId`);
+            const data = await response.json();
+            if (!response.ok){
+                return console.log(data, "<response")
+            }
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchOrders();
+    }, [])
     return (
         <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
             <h3 className="font-bold text-3xl">MY ORDERS</h3>
@@ -23,9 +42,9 @@ export default function MyOrders() {
 
                 <button className="bg-base-100 text-white text-xl font-bold py-3 px-10 rounded-lg">Checkout</button>
 
-        {orders.map(e => (
+        {/* {orders.map(e => (
             <ProductCard key={e}/>
-        ))}
+        ))} */}
         </main>
     );
 }

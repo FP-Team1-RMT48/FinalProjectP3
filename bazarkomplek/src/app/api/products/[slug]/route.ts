@@ -9,7 +9,7 @@ type RequestParam = {
 export async function GET(request: Request, { params }: RequestParam) {
     try {
         const product = await Products.findBySlug(params.slug);
-        return Response.json(product);
+        return Response.json(product[0]);
     } catch (error) {
         return Response.json(error)
     }
