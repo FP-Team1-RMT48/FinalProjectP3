@@ -19,8 +19,10 @@ export default function EventDetail({ params }: { params: { "event-slug": string
     filledLapakSlots: 0,
     lapakSlots: 0
   });
-
-  const [products, setProducts] = useState<Product[]>([])
+  
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filter, setFilter] = useState<string>("");
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const eventSlug = params["event-slug"]
   
   const handleFetchEvent = async () => {
@@ -32,6 +34,15 @@ export default function EventDetail({ params }: { params: { "event-slug": string
   useEffect(() => {
     handleFetchEvent()
   }, [])
+
+  useEffect(() => {
+    if (filter) {
+        setFilteredProducts(() => {return products.filter((el) => el.name.toLowerCase().includes(filter.toLowerCase()))})
+    }
+    else {
+        setFilteredProducts(products)
+    }
+  }, [products, filter])
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
@@ -60,9 +71,10 @@ export default function EventDetail({ params }: { params: { "event-slug": string
           </div>
         </div>
       </div>
-      <h1 className="text-base-100 text-7xl py-8">Product</h1>
+      <h1 className="text-base-100 text-3xl pb-8 pt-32 font-bold">PRODUCT</h1>
+      <input type="text" onChange={(e) => setFilter(e.target.value)} value={filter} className="w-3/6 border-2 p-2 text-base-100" placeholder="Search a product here..."/>
       <div className="card-container flex flex-row gap-5 flex-wrap xs:justify-center md:justify-space pt-5">
-        {products?.map((e, i) => {
+        {filteredProducts?.map((e, i) => {
           return <SmallProductCard key={i} index={i} product={e} eventSlug={eventSlug}  />;
         })}
       </div>

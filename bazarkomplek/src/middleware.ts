@@ -37,5 +37,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/api/products/add", "/api/transactions/add", "/api/transactions/buyerId", "/api/transactions/sellerId", "/my-lapak/:path*", "/api/products/edit/:slug*", "/api/products/delete/:slug*", "/admin-products", "/api/transactions/delete/:transactionId*"],
+    matcher: ["/api/products/add", "/api/transactions/buyerId", "/api/products/sellerId", "/api/transactions/sellerId",  "/my-lapak/:path*", "/api/products/edit/:slug*", "/api/products/delete/:slug*", "/admin-products", "/api/transactions/delete/:transactionId*"],
+    // matcher: ["/api/products/add", "/api/transactions/add", "/api/transactions/buyerId", "/api/transactions/sellerId", "/my-lapak/:path*", "/api/products/edit/:slug*", "/api/products/delete/:slug*", "/admin-products", "/api/transactions/delete/:transactionId*"],
 };

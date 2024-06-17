@@ -1,4 +1,4 @@
-import { NewTransaction, Pagination, Transaction } from "@/app/interface";
+import { NewTransaction, Pagination, Transaction, TransactionInput } from "@/app/interface";
 import { getCollection } from "../config";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
@@ -6,12 +6,12 @@ import { z } from "zod";
 const NewTransactionSchema = z.object({
     productId: z
         .string({ message: "Product ID is required" })
-        .min(1, { message: "Seller ID is required" }),
+        .min(1, { message: "Product ID is required" }),
     buyerId: z
-        .string({ message: "Product ID is required" })
-        .min(1, { message: "Seller ID is required" }),
+        .string({ message: "Buyer ID is required" })
+        .min(1, { message: "Buyer ID is required" }),
     sellerId: z
-        .string({ message: "Product ID is required" })
+        .string({ message: "Seller ID is required" })
         .min(1, { message: "Seller ID is required" }),
     status: z
         .string()
@@ -123,7 +123,13 @@ export default class Transactions {
                     from: "Products",
                     localField: "productId",
                     foreignField: "_id",
-                    as: "productDetails",
+                    as: "productDetail",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$productDetail",
+                    preserveNullAndEmptyArrays: true,
                 },
             },
         ];
@@ -154,10 +160,14 @@ export default class Transactions {
         return transactions;
     }
 
-    static async addCartTransactionByBuyerId(newTransaction: NewTransaction) {
+    static async addCartTransactionByBuyerId(newTransaction: TransactionInput) {
         const validatedTransaction = NewTransactionSchema.parse(newTransaction);
-
-
+        const alreadyOnCart = await this.collection().findOne({
+            productId: new ObjectId(validatedTransaction.productId),
+            sellerId: new ObjectId(validatedTransaction.sellerId),
+            buyerId: new ObjectId(validatedTransaction.buyerId)
+        })
+        if (alreadyOnCart) throw new Error("You Have Already added this item to your Cart")
         const result = await this.collection().insertOne({
             ...validatedTransaction,
             productId: new ObjectId(validatedTransaction.productId),

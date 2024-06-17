@@ -52,17 +52,17 @@ export default function Navbar({ logOn }: { logOn: boolean }) {
               <Link href={"/my-lapak"}>My Lapak</Link>
             </li>
             <li className="">
+              <a>Profile</a>
+            </li>
+            <li className="">
+              <Link href={"/about-us"}>About Us</Link>
+            </li>
+            <li className="">
               {logOn ? (
                 <LogoutBtn />
               ) : (
                 <Link href={"/login"}>Login / Register</Link>
               )}
-            </li>
-            <li className="">
-              <a>Profile</a>
-            </li>
-            <li className="">
-              <Link href={"/about-us"}>About Us</Link>
             </li>
           </ul>
         </div>

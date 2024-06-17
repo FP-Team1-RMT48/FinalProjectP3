@@ -71,7 +71,7 @@ export default class Events {
     page: string;
     filter: string;
   }) {
-    const result = await this.getEventsWithPagination(4, page, filter);
+    const result = await this.getEventsWithPagination(100, page, filter);
     return result;
   }
 

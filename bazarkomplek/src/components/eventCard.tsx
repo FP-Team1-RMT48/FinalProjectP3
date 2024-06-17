@@ -7,7 +7,7 @@ import { Event } from "@/app/interface";
 
 export default function EventCard({event, index}: {event: Event, index: number}){
     return (
-    <motion.div  initial={{opacity: 0, y: 50}} whileInView={{opacity: 1, y: 0}} transition={{ duration: 0.5, delay: index * 0.2 }}  className="card w-96 h-[35rem] bg-base-100 shadow-xl image-full flex flex-col">
+    <motion.div  initial={{opacity: 0, y: 50}} whileInView={{opacity: 1, y: 0}} transition={{ duration: 0.5, delay: index * 0.2 }}  className="card w-80 sm:w-96 h-[35rem] bg-base-100 shadow-xl image-full flex flex-col">
     <figure className="flex-shrink-0">
         <img
             src={event.eventImg}

@@ -83,6 +83,12 @@ export default function MyLapak() {
         }
     };
 
+        const getButtonClass = (status: string) => {
+        const baseClass = "rounded-lg p-2 min-w-16 md:min-w-24 border-2";
+        const activeClass = filter === status ? "bg-accent text-white " : "bg-white text-accent";
+        return `${baseClass} ${activeClass}`;
+    };
+
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -92,14 +98,15 @@ export default function MyLapak() {
     return (
         <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
             <h3 className="font-bold text-3xl">MY LAPAK</h3>
-            <div className="flex justify-center w-5/6 md:w-3/6 sm:w-5/12 p-3 gap-5 bg-white rounded-lg text-xs md:text-lg font-bold border-2 shadow-lg">
-                <button onClick={() => setFilter("AVAILABLE")} className="bg-accent rounded-lg p-2 text-white">
+            <div className="flex items-center justify-center w-5/6 md:w-3/6 sm:w-5/12 p-3 gap-5 bg-white rounded-lg text-xs md:text-lg font-bold border-2 shadow-lg">
+                <p className="hidden lg:block text-accent">Status: </p>
+                <button onClick={() => setFilter("AVAILABLE")} className={getButtonClass("AVAILABLE")}>
                     Available
                 </button>
-                <button onClick={() => setFilter("VERIFYING")} className="bg-yellow-800 rounded-lg p-2 text-white">
+                <button onClick={() => setFilter("VERIFYING")} className={getButtonClass("VERIFYING")}>
                     Verifying
                 </button>
-                <button onClick={() => setFilter("UNAVAILABLE")} className="bg-green-800 rounded-lg p-2 text-white min-w-16 md:min-w-24">
+                <button onClick={() => setFilter("UNAVAILABLE")} className={getButtonClass("UNAVAILABLE")}>
                     Sold
                 </button>
             </div>
@@ -111,9 +118,9 @@ export default function MyLapak() {
             </Link>
 
             {loading ? (
-                <p className="text-xl">Loading...</p>
+                <p className="text-base text-center md:text-xl">Loading...</p>
             ) : filteredProducts.length === 0 ? (
-                <p className="text-xl">You have no products with status {filter.toLowerCase()}</p>
+                <p className="text-base text-center md:text-xl">You have no products with status {filter.toLowerCase()}</p>
             ) : (
                 filteredProducts.map((e, i) => (
                     e.status === "UNAVAILABLE" ? (

@@ -27,7 +27,7 @@ export type AdminEvent = {
 };
 
 export type User = {
-  _id: ObjectId;
+  _id: ObjectId | string;
   username: string;
   email: string;
   location: string;
@@ -49,8 +49,8 @@ export type EventWithProducts = {
 };
 
 export type Product = {
-  _id: ObjectId;
-  sellerId: ObjectId;
+  _id: ObjectId | string;
+  sellerId: ObjectId | string;
   name: string;
   slug: string;
   image: string;
@@ -60,7 +60,7 @@ export type Product = {
   category: string;
   status: string;
   price: number;
-  eventId: ObjectId;
+  eventId: ObjectId | string;
 };
 
 export type productWithEvent = Product & {
@@ -103,6 +103,12 @@ export type NewTransaction = {
   sellerId: string;
   createdAt: string;
 };
+
+export type TransactionInput =Omit<NewTransaction, "createdAt">
+
+export type TransactionWithProductDetail = NewTransaction & {
+    productDetail: Product
+}
 
 export type Pagination = {
   data: Product[] | Transaction[];

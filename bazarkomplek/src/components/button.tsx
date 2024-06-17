@@ -30,7 +30,7 @@ export function ButtonBtn() {
 export function LogoutBtn() {
   return (
     <button
-      className="hidden md:block"
+      className=""
       onClick={() => {
         logout();
       }}
