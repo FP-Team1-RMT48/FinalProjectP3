@@ -1,6 +1,22 @@
-import { Pagination, Transaction } from "@/app/interface";
+import { NewTransaction, Pagination, Transaction } from "@/app/interface";
 import { getCollection } from "../config";
 import { ObjectId } from "mongodb";
+import { z } from "zod";
+
+const NewTransactionSchema = z.object({
+    productId: z
+        .string({ message: "Product ID is required" })
+        .min(1, { message: "Seller ID is required" }),
+    buyerId: z
+        .string({ message: "Product ID is required" })
+        .min(1, { message: "Seller ID is required" }),
+    sellerId: z
+        .string({ message: "Product ID is required" })
+        .min(1, { message: "Seller ID is required" }),
+    status: z
+        .string()
+        .default("DRAFT"),
+});
 
 export default class Transactions {
     static collection() {
@@ -45,7 +61,15 @@ export default class Transactions {
             },
             {
                 $limit: dataPage
-            }
+            },
+            {
+                $lookup: {
+                    from: "Products",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productDetails",
+                },
+            },
         ];
     
         const totalData = await this.collection().aggregate(aggregateTotalData).toArray();
@@ -103,8 +127,65 @@ export default class Transactions {
                 },
             },
         ];
+
+        const transactions = await this.collection().aggregate(aggregate).toArray();
+        return transactions;
+    }
+
+    static async addTransactionByBuyerId(buyerId: string) {
+        const buyerIdAsObjectId = new ObjectId(buyerId);
+        const aggregate = [
+            {
+                $match: {
+                    buyerId: buyerIdAsObjectId
+                },
+            },
+            {
+                $lookup: {
+                    from: "Products",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productDetails",
+                },
+            },
+        ];
     
         const transactions = await this.collection().aggregate(aggregate).toArray();
         return transactions;
+    }
+
+    static async addCartTransactionByBuyerId(newTransaction: NewTransaction) {
+        const validatedTransaction = NewTransactionSchema.parse(newTransaction);
+
+
+        const result = await this.collection().insertOne({
+            ...validatedTransaction,
+            productId: new ObjectId(validatedTransaction.productId),
+            sellerId: new ObjectId(validatedTransaction.sellerId),
+            buyerId: new ObjectId(validatedTransaction.buyerId),
+            createdAt: new Date()
+        });
+        return result.insertedId;
+    }
+
+    static async deleteTransaction(transactionId: string, userId: string) {
+        const transactionObjectId = new ObjectId(transactionId)
+        const userObjectId = new ObjectId(userId)
+        console.log(
+            `Deleting transaction with transactionId: ${transactionObjectId} and userId: ${userObjectId}`
+        );
+        const existingTransaction = await this.collection().findOne({ _id: transactionObjectId })
+        if (!existingTransaction) {
+            throw new Error("Transaction not found") 
+        }
+        if (existingTransaction.buyerId.toString() !== userId) {
+            throw new Error("User not authorized to delete this product");
+        }
+        const deleteResult = await this.collection().deleteOne({
+            _id: new ObjectId(transactionObjectId),
+            buyerId: new ObjectId(userObjectId)
+        })
+        console.log(`Delete result: ${JSON.stringify(deleteResult)}`);
+        return { message: "transaction deleted successfully" };
     }
 }
