@@ -73,13 +73,11 @@ export default function MyLapak() {
             const data = await response.json();
             if (!response.ok) {
                 console.log(data, "<<<<response");
-                // Handle error if needed
             }
             setProducts(data.products);
-            setLoading(false); // Set loading to false once data is fetched
+            setLoading(false);
         } catch (error) {
             console.error("Error fetching products:", error);
-            // Handle error if needed
         }
     };
 

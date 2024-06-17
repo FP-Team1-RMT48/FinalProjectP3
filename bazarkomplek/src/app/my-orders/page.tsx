@@ -6,6 +6,7 @@ import TransactionCard from "@/components/transactionCard";
 
 export default function MyOrders() {
     const [orders, setOrders] = useState<TransactionWithProductDetail[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     const [filter, setFilter] = useState<string>("DRAFT");
 
     const fetchOrders = async () => {
@@ -16,6 +17,22 @@ export default function MyOrders() {
                 return console.log(data, "<response")
             }
             setOrders(data.transactions)
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleRemoveProduct = async (id: string) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/transactions/delete/${id}`, {
+                method: "DELETE"
+            })
+            if (!response.ok){
+                throw new Error (await response.json())
+            }
+            console.log("remove success")
+            fetchOrders();
         } catch (error) {
             console.log(error)
         }
@@ -30,6 +47,8 @@ export default function MyOrders() {
     useEffect(() => {
         fetchOrders();
     }, [])
+
+    const filteredTransactions = orders?.filter(product => product.status === filter);
     return (
         <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
             <h3 className="font-bold text-3xl">MY ORDERS</h3>
@@ -51,9 +70,15 @@ export default function MyOrders() {
 
                 <button className="bg-base-100 text-white text-xl font-bold py-3 px-10 rounded-lg">Checkout</button>
 
-        {orders.map((e, i) => (
-            <TransactionCard key={i} product={e.productDetail}/>
-        ))}
+                {loading ? (
+                <p className="text-base text-center md:text-xl">Loading...</p>
+            ) : filteredTransactions.length === 0 ? (
+                <p className="text-base text-center md:text-xl">You have no orders with status {filter.toLowerCase()}</p>
+            ) : (
+                filteredTransactions.map((e, i) => (
+                    <TransactionCard key={i} transaction={e} handleRemoveProduct={handleRemoveProduct}/>
+                ))
+            )}
         </main>
     );
 }
