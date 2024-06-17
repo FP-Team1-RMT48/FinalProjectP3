@@ -1,9 +1,11 @@
 "use client"
 import ProductCard from "@/components/productCard";
 import { useEffect, useState } from "react";
+import { TransactionWithProductDetail } from "../interface";
+import TransactionCard from "@/components/transactionCard";
 
 export default function MyOrders() {
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState<TransactionWithProductDetail[]>([]);
     const [filter, setFilter] = useState<string>("DRAFT");
 
     const fetchOrders = async () => {
@@ -13,7 +15,7 @@ export default function MyOrders() {
             if (!response.ok){
                 return console.log(data, "<response")
             }
-            console.log(data)
+            setOrders(data.transactions)
         } catch (error) {
             console.log(error)
         }
@@ -49,9 +51,9 @@ export default function MyOrders() {
 
                 <button className="bg-base-100 text-white text-xl font-bold py-3 px-10 rounded-lg">Checkout</button>
 
-        {/* {orders.map(e => (
-            <ProductCard key={e}/>
-        ))} */}
+        {orders.map((e, i) => (
+            <TransactionCard key={i} product={e.productDetail}/>
+        ))}
         </main>
     );
 }
