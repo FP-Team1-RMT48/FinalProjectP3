@@ -3,9 +3,15 @@
 import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
-import { Product } from "@/app/interface";
+import { Product, TransactionWithProductDetail } from "@/app/interface";
 
-export default function TransactionCard({product}:{product: Product}) {
+export default function TransactionCard({transaction, handleRemoveProduct}:{transaction: TransactionWithProductDetail, handleRemoveProduct:any}) {
+    
+    const handleDelete = () => {
+        handleRemoveProduct(transaction._id)
+    }
+
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -70 }}
@@ -15,7 +21,7 @@ export default function TransactionCard({product}:{product: Product}) {
         >
             <div className="w-full h-36 sm:h-64 md:w-3/12">
                 <img
-                    src={product.image}
+                    src={transaction.productDetail.image}
                     className="w-full h-full object-cover"
                     alt=""
                 />
@@ -23,10 +29,32 @@ export default function TransactionCard({product}:{product: Product}) {
             <div className="w-full flex px-2 sm:px-4 sm:text-xl md:py-4 md:w-9/12">
                 <div className="w-5/6 flex flex-col gap-2 break-all">
                 <p className="font-bold">
-                Product Name : <span  className="font-normal">{product.name}</span>
+                Product Name : <span  className="font-normal">{transaction.productDetail.name}</span>
             </p>
-            <p className=" font-bold">Product Price : <span  className="font-normal">{product.price}</span></p>
-            <p className="pb-4 font-bold">Product Description : <span  className="font-normal">{product.excerpt}</span></p>
+            <p className=" font-bold">Product Price : <span  className="font-normal">{transaction.productDetail.price}</span></p>
+            <p className="pb-4 font-bold">Product Description : <span  className="font-normal">{transaction.productDetail.excerpt}</span></p>
+                </div>
+                <div className="h-full w-1/6 md:jusify-end md:items-start flex">
+                {transaction.status === "DRAFT" ? (
+                    <button onClick={handleDelete} className="ml-auto">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-7"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18 18 6M6 6l12 12"
+                        />
+                    </svg>
+                </button>
+                ) : (
+                    <></>
+                )}
                 </div>
             </div>
         </motion.div>
