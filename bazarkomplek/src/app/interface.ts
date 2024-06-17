@@ -76,7 +76,7 @@ export type Transaction = {
   productId: ObjectId;
   buyerId: ObjectId;
   sellerId: ObjectId;
-  status: [string];
+  status: string;
 };
 
 export type EditedProduct = Omit<Product, "_id" | "sellerId" | "eventId">;
@@ -96,6 +96,13 @@ export type NewProduct = {
 };
 
 export type NewProductInput = Omit<NewProduct, "sellerId" | "slug" | "status">;
+
+export type NewTransaction = {
+  productId: string;
+  buyerId: string;
+  sellerId: string;
+  createdAt: string;
+};
 
 export type Pagination = {
   data: Product[] | Transaction[];
