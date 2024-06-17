@@ -71,7 +71,7 @@ export default class Events {
     page: string;
     filter: string;
   }) {
-    const result = await this.getEventsWithPagination(4, page, filter);
+    const result = await this.getEventsWithPagination(100, page, filter);
     return result;
   }
 
@@ -85,7 +85,7 @@ export default class Events {
     filter: string;
   }): Promise<Event[]> {
     try {
-      const events = await this.getEventsWithPagination(4, page, filter);
+      const events = await this.getEventsWithPagination(100, page, filter);
       const today = new Date();
       const upcomingThreshold = new Date(today);
       upcomingThreshold.setDate(today.getDate() + 30);

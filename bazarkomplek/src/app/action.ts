@@ -37,7 +37,9 @@ export async function fetchProductDetail(
 }
 
 export async function fetchOngoingEvents():Promise<Event[]>{
-  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing")
+  const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/events/ongoing",
+    
+  )
   const data = await response.json();
   return data.data.events;
 
