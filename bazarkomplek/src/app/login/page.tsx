@@ -72,7 +72,7 @@ export default function LoginPage() {
         <h6 className="pt-5 text-base-100 text-center">
           Don&apos;t have an account?&nbsp;
           <Link href="/register" className="text-accent">
-            Signup now!
+            Sign up now!
           </Link>
         </h6>
       </main>

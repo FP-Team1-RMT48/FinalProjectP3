@@ -52,6 +52,7 @@ export type EventWithProducts = {
   filledLapakSlots: number;
   lapakSlots: number;
   EventProducts: Product[];
+  locations: Locations
 };
 
 export type Product = {
@@ -85,7 +86,7 @@ export type Transaction = {
   status: string;
 };
 
-export type EditedProduct = Omit<Product, "_id" | "sellerId" | "eventId">;
+export type EditedProduct = Omit<Product, "_id" | "sellerId">;
 
 export type NewProduct = {
   sellerId: string;

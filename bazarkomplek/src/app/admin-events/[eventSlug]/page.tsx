@@ -1,5 +1,3 @@
-// import { editEvent } from "@/app/action";
-
 import { AdminEvent } from "@/app/interface";
 
 async function getEventDetail(eventSlug: string): Promise<AdminEvent> {

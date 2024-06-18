@@ -149,19 +149,19 @@ export default class Events {
   }): Promise<Event[]> {
     const productsDataLimit = 3;
     const agg = [
-      {
-        '$geoNear': {
-          'near': {
-            'type': 'Point', 
-            'coordinates': [
-              107.6919539082812, -6.909547069353043
-            ]
-          }, 
-          'distanceField': 'locations', 
-          'maxDistance': 2000, 
-          'spherical': true
-        }
-      },
+      // {
+      //   '$geoNear': {
+      //     'near': {
+      //       'type': 'Point', 
+      //       'coordinates': [
+      //         107.6919539082812, -6.909547069353043
+      //       ]
+      //     }, 
+      //     'distanceField': 'locations', 
+      //     'maxDistance': 2000, 
+      //     'spherical': true
+      //   }
+      // },
       {
         $lookup: {
           from: "Products",

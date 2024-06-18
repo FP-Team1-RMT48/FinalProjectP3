@@ -17,6 +17,7 @@ export async function PUT(request: NextRequest) {
       "description",
       "excerpt",
       "type",
+      "eventId",
       "category",
       "status",
       "price",

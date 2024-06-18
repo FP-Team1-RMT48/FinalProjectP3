@@ -6,11 +6,9 @@ import { ConfirmationModalProps, Event } from "@/app/interface";
 import { fetchProductDetail, fetchUpcomingEvents } from "@/app/action";
 import { useRouter } from "next/navigation";
 import {
-    CldImage,
     CldUploadButton,
     CloudinaryUploadWidgetInfo,
 } from "next-cloudinary";
-import Image from "next/image";
 import Swal from "sweetalert2";
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -173,7 +171,24 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
             });
             router.push("/my-lapak");
         } catch (error) {
-            console.log(error);
+            if (
+                typeof error === "object" &&
+                error !== null &&
+                "error" in error
+            ) {
+                Swal.fire({
+                    title: "Error",
+                    text: `${error.error}`,
+                    icon: "error",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                });
+            } else {
+                console.log(error)
+            }
         }
     };
 

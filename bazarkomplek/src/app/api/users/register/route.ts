@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     } catch (error) {
         if (error instanceof ZodError) {
             const errorMessage = error.issues.map((item) => {
-                return item.path[0] + ": " + item.message;
+                return item.message;
             });
 
             return Response.json({

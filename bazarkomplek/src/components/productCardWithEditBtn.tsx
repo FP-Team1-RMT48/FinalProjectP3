@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
 import { Product } from "@/app/interface";
+import formatCurrencyIDR from "@/utils/currencyConverter";
 
 
 export default function ProductCardWithEdit({product, handleDeleteProduct}:{product: Product, handleDeleteProduct:any}){
@@ -27,7 +28,7 @@ return (
             <p className="font-bold">
                 Product Name : <span className="font-normal">{product.name}</span>
             </p>
-            <p className=" font-bold">Product Price : <span  className="font-normal">{product.price}</span></p>
+            <p className=" font-bold">Product Price : <span  className="font-normal">{formatCurrencyIDR(product.price)}</span></p>
             <p className="pb-4 font-bold">Product Description : <span  className="font-normal">{product.excerpt}</span></p>
         </div>
         <div className="h-full w-1/6 md:justify-between md:items-start flex gap-6 flex-col">
