@@ -5,7 +5,8 @@ import { truncateDescription } from "@/utils/truncateDescription";
 import { Event } from "@/app/interface";
 import { fetchUpcomingEvents } from "@/app/action";
 import { useRouter } from "next/navigation";
-import { CldUploadButton, CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
+import { CldUploadButton, CloudinaryUploadWidgetInfo } from "next-cloudinary";
+import Swal from "sweetalert2";
 
 export default function AddProduct() {
     const categories = [
@@ -49,7 +50,7 @@ export default function AddProduct() {
             const data = {
                 ...formData,
                 excerpt: await truncateDescription(description),
-                image: cloudinaryUrl
+                image: cloudinaryUrl,
             };
 
             const response = await fetch(
@@ -66,11 +67,38 @@ export default function AddProduct() {
 
             if (!response.ok) {
                 const data = await response.json();
-                return console.log(data, "<<<response");
+                throw data;
             }
+            Swal.fire({
+                title: "Success",
+                text: "Product has been added to your Lapak successfully",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+            });
             router.push("/my-lapak");
         } catch (error) {
-            console.log(error);
+            if (
+                typeof error === "object" &&
+                error !== null &&
+                "error" in error
+            ) {
+                Swal.fire({
+                    title: "Error",
+                    text: `${error.error}`,
+                    icon: "error",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                });
+            } else {
+                console.log(error)
+            }
         }
     };
 
@@ -78,9 +106,6 @@ export default function AddProduct() {
         fetchEventsOption();
     }, []);
 
-    useEffect(()=>{
-        console.log(typeof(cloudinaryUrl), "cloudinaryUrl")
-    }, [cloudinaryUrl])
     return (
         <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
             <h3 className="font-bold text-3xl">ADD PRODUCT</h3>
@@ -164,7 +189,10 @@ export default function AddProduct() {
                             uploadPreset="ml_default"
                             signatureEndpoint="/api/cloudinary"
                             onSuccess={(result) => {
-                                setCloudinaryUrl(result?.info?.secure_url as any);  
+                                setCloudinaryUrl(
+                                    (result?.info as CloudinaryUploadWidgetInfo)
+                                        ?.secure_url
+                                );
                             }}
                         />
                     </div>

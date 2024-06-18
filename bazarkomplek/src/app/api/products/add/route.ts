@@ -11,6 +11,7 @@ export async function POST(request: Request) {
         if (typeof newProductBody.price === 'string') {
           newProductBody.price = parseFloat(newProductBody.price);
       }
+      if (!newProductBody.eventId) throw new Error ("Event Required")
         newProductBody.eventId = new ObjectId(newProductBody.eventId)
         const userId = request.headers.get("x-id-user") as string;
         newProductBody = newProductBody.status ? newProductBody : { ...newProductBody, status: "VERIFYING" }
