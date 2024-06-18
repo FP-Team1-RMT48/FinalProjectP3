@@ -167,7 +167,7 @@ export default class Transactions {
             sellerId: new ObjectId(validatedTransaction.sellerId),
             buyerId: new ObjectId(validatedTransaction.buyerId)
         })
-        if (alreadyOnCart) throw new Error("You Have Already added this item to your Cart")
+        if (alreadyOnCart) throw new Error("Product already added to your cart")
         const result = await this.collection().insertOne({
             ...validatedTransaction,
             productId: new ObjectId(validatedTransaction.productId),
