@@ -60,7 +60,7 @@ export default function EditAdminProductDetail({
         excerpt: await truncateDescription(description),
       };
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}api/products/edit/${slug}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/products/editAdmin/${slug}`,
         {
           method: "PUT",
           body: JSON.stringify(formData),

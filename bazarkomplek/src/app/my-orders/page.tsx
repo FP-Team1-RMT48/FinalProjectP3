@@ -55,19 +55,21 @@ export default function MyOrders({ params }: { params: { price: string } }) {
     }
   };
 
-  const getPrice = async (price: number) => {
+  const getPrice = async (price: number, id: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/midtrans`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/midtrans?price=${price}`,
         {
           method: "POST",
-          body: JSON.stringify({ price: price }),
+          body: JSON.stringify({ transactionId: id }),
         }
       );
       if (!response.ok) {
         throw new Error(await response.json());
       }
-      return await response.json();
+      const data = await response.json();
+      // console.log(data, "<response");
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +108,7 @@ export default function MyOrders({ params }: { params: { price: string } }) {
           Cart
         </button>
         <button
-          onClick={() => setFilter("PENDING")}
+          onClick={() => setFilter("pending")}
           className={getButtonClass("PENDING")}
         >
           Pending
@@ -118,20 +120,20 @@ export default function MyOrders({ params }: { params: { price: string } }) {
           Cancelled
         </button>
         <button
-          onClick={() => setFilter("COMPLETED")}
+          onClick={() => setFilter("settlement")}
           className={getButtonClass("COMPLETED")}
         >
           Completed
         </button>
       </div>
-      {filteredTransactions.map((e, idx) => (
+      {/* {filteredTransactions.map((e, idx) => (
         <Midtransaction
           key={idx}
           filter={filter}
           getPrice={getPrice}
           transaction={e}
         />
-      ))}
+      ))} */}
 
       {loading ? (
         <p className="text-base text-center md:text-xl">Loading...</p>
@@ -144,6 +146,8 @@ export default function MyOrders({ params }: { params: { price: string } }) {
           <TransactionCard
             key={i}
             transaction={e}
+            filter={filter}
+            getPrice={getPrice}
             handleRemoveProduct={handleRemoveProduct}
           />
         ))
