@@ -164,7 +164,7 @@ export default function AddProduct() {
                             uploadPreset="ml_default"
                             signatureEndpoint="/api/cloudinary"
                             onSuccess={(result) => {
-                                setCloudinaryUrl(result?.info?.secure_url as any);  
+                                setCloudinaryUrl((result?.info as CloudinaryUploadWidgetInfo)?.secure_url);  
                             }}
                         />
                     </div>

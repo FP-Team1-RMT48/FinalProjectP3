@@ -3,16 +3,22 @@
 import { addEvent } from "@/app/action";
 import { Map } from "@/components/map";
 import { useState } from "react";
+import {
+  CldUploadButton,
+  CloudinaryUploadWidgetInfo,
+} from "next-cloudinary";
+import Swal from "sweetalert2";
 
 export default function AddEventPage() {
+  const [cloudinaryUrl, setCloudinaryUrl] = useState<any>("");
   const [formData, setFormData] = useState({
     name: "",
     location: "",
-    coordinates: {
+    locations: {
       type: "Point",
       coordinates: [0, 0],
     },
-    eventImg: "",
+    eventImg: cloudinaryUrl,
     startDate: "",
     endDate: "",
     lapakSlots: 0,
@@ -31,23 +37,37 @@ export default function AddEventPage() {
   function handleFormData(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      addEvent(formData);
-    } catch (error) {}
+      const addedEvent ={
+        ...formData,
+        eventImg: cloudinaryUrl
+      }
+      addEvent(addedEvent);
+      Swal.fire({
+        title: "Success!",
+        text: "Add an event success",
+        icon: "success"
+      });
+    } catch (error) {
+      console.log(error)
+      Swal.fire({
+        title: "Error",
+        text: `Error: ${error}`,
+        icon: "error"
+      });
+    }
   }
   function addGeolocation(
-    payload: { lat: number; lng: number }, address: string
-
+    payload: { lng: number; lat: number },
+    address: string
   ) {
-    console.log(payload, `,<<PAYLOAD`);
     setFormData((prevFormData) => ({
       ...prevFormData,
       coordinates: {
         type: "Point",
-        coordinates: [payload.lat, payload.lng],
+        coordinates: [payload.lng, payload.lat],
       },
       location: address,
     }));
-    //simpen ke data event
   }
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
@@ -98,25 +118,21 @@ export default function AddEventPage() {
           <label htmlFor="" className="text-xs pl-2 text-white lg:text-base">
             Event Image
           </label>
-          <input
-            type="text"
-            name="eventImg"
-            onChange={handleChange}
+          <CldUploadButton
             className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg"
+            uploadPreset="ml_default"
+            signatureEndpoint="/api/cloudinary"
+            onSuccess={(result) => {
+              setCloudinaryUrl((result?.info as CloudinaryUploadWidgetInfo)?.secure_url);
+            }}
           />
         </div>
-        <div>
-        </div>
+        <div></div>
         <div className="flex flex-col gap-1 xs:w-5/6 xs:self-center lg:w-8/12 ">
           <label htmlFor="" className="text-xs pl-2 text-white lg:text-base">
             Event location
           </label>
           <Map addGeolocation={addGeolocation} />
-          {/* <textarea
-            name="location"
-            onChange={handleChange}
-            className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg"
-          /> */}
         </div>
         <button
           type="submit"

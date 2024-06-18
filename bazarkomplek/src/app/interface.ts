@@ -10,9 +10,9 @@ export type Event = {
   eventSlug: string;
   filledLapakSlots: number;
   lapakSlots: number;
-  coordinates: Coordinates
+  locations: Locations
 };
-type Coordinates ={
+type Locations ={
   type: string,
   coordinates: number[],
 }

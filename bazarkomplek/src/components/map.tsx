@@ -82,11 +82,11 @@ export function Map({
           setMarker(position, place.name!);
         }
         const geoLoc = {
+          lng: position?.lat() || 0,
           lat: position?.lat() || 0,
-          lng: position?.lng() || 0,
         };
 
-        addGeolocation(geoLoc,  place.name as string);
+        addGeolocation(geoLoc,  place.formatted_address as string);
       });
     }
   }, [autoComplete]);

@@ -46,7 +46,6 @@ export async function fetchProductDetail(
     process.env.NEXT_PUBLIC_BASE_URL + `api/products/${productSlug}`
   );
   const data = await response.json();
-  console.log(productSlug,`PROSLUG`, data,`<<DATA`)
   return data;
 }
 
