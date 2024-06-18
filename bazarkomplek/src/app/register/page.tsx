@@ -37,15 +37,17 @@ export default function RegisterPage() {
   };
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center p-24">
-        <h1 className="text-6xl text-base-100 font-bold">Register</h1>
+      <main className="flex min-h-screen flex-col items-center p-10 md:p-24">
+        <h1 className="text-3xl text-base-100 font-bold xs:text-4xl md:text-4xl lg:text-5xl xl:text-6xl">
+          Register
+        </h1>
         <br />
-        <div className="card flex bg-base-100 shadow-xl w-1/2">
+        <div className="card flex bg-base-100 shadow-xl w-full xs:w-full md:w-1/2 xl:w-1/2 2xl:w-1/3">
           <form action={handleRegister}>
             <div className="card-body">
-              <div className="flex flex-row flex-wrap justify-center">
+              <div className="flex flex-col md:flex-row md:flex-wrap justify-center">
                 <div className="w-full lg:w-1/2 mb-4 lg:mb-0">
-                  <label className="flex items-center text-primary justify-center font-bold pb-2">
+                  <label className="flex items-center text-primary justify-center font-bold pb-2 text-xs xs:text-sm md:text-lg lg:text-sm 2xl:text-sm">
                     Email
                   </label>
                   <input
@@ -54,11 +56,11 @@ export default function RegisterPage() {
                     name="email"
                     autoComplete="email"
                     className="grow input bg-white text-base-100 w-full lg:pr-2 xl:pr-2"
-                    placeholder="Email"
+                    placeholder="email"
                   />
                 </div>
                 <div className="w-full lg:w-1/2 lg:pl-2 xl:pl-2">
-                  <label className="pb-2 flex items-center text-primary justify-center font-bold">
+                  <label className="pb-2 flex items-center text-primary justify-center font-bold xs:text-sm md:text-lg lg:text-sm 2xl:text-sm text-xs">
                     Username
                   </label>
                   <input
@@ -71,7 +73,7 @@ export default function RegisterPage() {
                   />
                 </div>
               </div>
-              <label className="flex items-center gap-2 text-primary justify-center font-bold">
+              <label className="flex items-center gap-2 text-primary justify-center font-bold xs:text-sm xs:text-sm md:text-lg lg:text-sm 2xl:text-sm text-xs">
                 Phone Number
               </label>
               <input
@@ -82,10 +84,9 @@ export default function RegisterPage() {
                 className="grow input bg-white text-base-100 w-full"
                 placeholder="phone number"
               />
-              <label className="flex items-center gap-2 text-primary justify-center font-bold">
+              <label className="flex items-center gap-2 text-primary justify-center font-bold xs:text-sm md:text-lg lg:text-sm 2xl:text-sm text-xs">
                 Address
               </label>
-
               <input
                 type="text"
                 id="location"
@@ -93,7 +94,7 @@ export default function RegisterPage() {
                 className="grow input bg-white text-base-100 w-full"
                 placeholder="address"
               />
-              <label className="flex items-center gap-2 text-primary justify-center font-bold">
+              <label className="flex items-center gap-2 text-primary justify-center font-bold xs:text-sm md:text-lg lg:text-sm 2xl:text-sm text-xs">
                 Password
               </label>
               <input
@@ -103,13 +104,13 @@ export default function RegisterPage() {
                 className="grow input bg-white text-base-100 w-full"
                 placeholder="password"
               />
-              <div className="flex justify-center items-center pt-10">
+              <div className="flex justify-center items-center pt-6">
                 <ButtonBtn />
               </div>
             </div>
           </form>
         </div>
-        <h6 className="pt-5 text-base-100">
+        <h6 className="pt-5 text-base-100 text-center">
           Already have an account?&nbsp;
           <Link href="/login" className="text-accent">
             Login now!
