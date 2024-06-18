@@ -5,8 +5,13 @@ import { truncateDescription } from "@/utils/truncateDescription";
 import { ConfirmationModalProps, Event } from "@/app/interface";
 import { fetchProductDetail, fetchUpcomingEvents } from "@/app/action";
 import { useRouter } from "next/navigation";
-import { CldImage, CldUploadButton } from "next-cloudinary";
+import {
+    CldImage,
+    CldUploadButton,
+    CloudinaryUploadWidgetInfo,
+} from "next-cloudinary";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
@@ -63,7 +68,7 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
         "Lain-lain",
     ];
     const [events, setEvents] = useState<Event[]>([]);
-    const [cloudinaryUrl, setCloudinaryUrl] = useState();
+    const [cloudinaryUrl, setCloudinaryUrl] = useState<string>("");
     const [formData, setFormData] = useState({
         name: "",
         image: cloudinaryUrl ? cloudinaryUrl : "",
@@ -118,6 +123,26 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
         }));
     };
 
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const description = formData.description;
+            const defaultImage = formData.image;
+            const data = {
+                ...formData,
+                excerpt: await truncateDescription(description),
+                image: cloudinaryUrl ? cloudinaryUrl : defaultImage,
+            };
+            if (formData.status === "UNAVAILABLE") {
+                setShowConfirmationModal(true);
+            } else {
+                await submitForm(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const submitForm = async (data: any) => {
         try {
             const response = await fetch(
@@ -134,28 +159,19 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
 
             if (!response.ok) {
                 const data = await response.json();
-                return console.log(data, "<<<response");
+                throw data
             }
+            Swal.fire({
+                title: "Success",
+                text: "Product has been edited successfully",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+            });
             router.push("/my-lapak");
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            const description = formData.description;
-            const data = {
-                ...formData,
-                excerpt: await truncateDescription(description),
-                image: cloudinaryUrl,
-            };
-            if (formData.status === "UNAVAILABLE") {
-                setShowConfirmationModal(true);
-            } else {
-                await submitForm(data);
-            }
         } catch (error) {
             console.log(error);
         }
@@ -236,14 +252,17 @@ export default function EditProduct({ params }: { params: { slug: string } }) {
                         >
                             Change Product Image
                         </label>
-                            <CldUploadButton
-                                className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg"
-                                uploadPreset="ml_default"
-                                signatureEndpoint="/api/cloudinary"
-                                onSuccess={(result) => {
-                                    setCloudinaryUrl(result?.info?.secure_url);
-                                }}
-                            />
+                        <CldUploadButton
+                            className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg"
+                            uploadPreset="ml_default"
+                            signatureEndpoint="/api/cloudinary"
+                            onSuccess={(result) => {
+                                setCloudinaryUrl(
+                                    (result?.info as CloudinaryUploadWidgetInfo)
+                                        ?.secure_url
+                                );
+                            }}
+                        />
                     </div>
                 </div>
                 <div className="flex flex-col justify-center gap-4 lg:flex-row lg:justify-evenly">

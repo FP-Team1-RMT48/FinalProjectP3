@@ -32,7 +32,8 @@ export default function EventDetail({
   const handleFetchEvent = async () => {
     const data = (await fetchEventDetail(eventSlug)) as EventWithProducts;
     setEvent(data);
-    setProducts(data.EventProducts);
+    const products =  data.EventProducts.filter(e => e.status !== "VERIFYING")
+    setProducts(products);
   };
 
   useEffect(() => {

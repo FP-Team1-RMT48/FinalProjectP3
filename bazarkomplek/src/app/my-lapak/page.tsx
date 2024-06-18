@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ConfirmationModalProps, productWithEvent } from "../interface";
 import ProductCard from "@/components/productCard";
+import Swal from "sweetalert2";
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -55,6 +56,16 @@ export default function MyLapak() {
                 const data = await response.json();
                 console.log(data, '<<<response');
             } else {
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Product has been deleted successfully',
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                });
                 fetchProducts();
             }
         } catch (error) {

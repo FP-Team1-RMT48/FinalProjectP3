@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { TransactionWithProductDetail } from "../interface";
 import TransactionCard from "@/components/transactionCard";
 import { Midtransaction } from "@/components/midtransaction";
+import Swal from "sweetalert2";
 
 export default function MyOrders({ params }: { params: { price: string } }) {
   const [orders, setOrders] = useState<TransactionWithProductDetail[]>([]);
@@ -38,7 +39,16 @@ export default function MyOrders({ params }: { params: { price: string } }) {
       if (!response.ok) {
         throw new Error(await response.json());
       }
-      console.log("remove success");
+      Swal.fire({
+        title: "Success",
+        text: "Product has been removed from cart successfully",
+        icon: "success",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+    });
       fetchOrders();
     } catch (error) {
       console.log(error);

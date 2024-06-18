@@ -1,6 +1,8 @@
 import { ButtonBtn } from "@/components/button";
+import ClientFlashComponent from "@/components/errorFlash";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function RegisterPage() {
   const handleRegister = async (formData: FormData) => {
@@ -10,6 +12,7 @@ export default function RegisterPage() {
     const phoneNumber = formData.get("phoneNumber");
     const location = formData.get("location");
     const password = formData.get("password");
+    
 
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/register`,
@@ -32,7 +35,16 @@ export default function RegisterPage() {
     if (!result.ok) {
       return redirect(`/register?error=${data.error}`);
     }
-    console.log(data);
+    Swal.fire({
+      title: 'Success',
+      text: 'Register Success',
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+  });
     return redirect("/login");
   };
   return (
@@ -41,6 +53,7 @@ export default function RegisterPage() {
         <h1 className="text-3xl text-base-100 font-bold xs:text-4xl md:text-4xl lg:text-5xl xl:text-6xl">
           Register
         </h1>
+        <ClientFlashComponent />
         <br />
         <div className="card flex bg-base-100 shadow-xl w-full xs:w-full md:w-1/2 xl:w-1/2 2xl:w-1/3">
           <form action={handleRegister}>

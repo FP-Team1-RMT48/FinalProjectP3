@@ -4,6 +4,7 @@ import { fetchProductDetail } from "@/app/action";
 import { Product, productWithUser } from "@/app/interface";
 import formatCurrencyIDR from "@/utils/currencyConverter";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default  function ProductDetail({ params }: { params: { "product-slug": string } }){
     const productSlug = params["product-slug"];
@@ -50,11 +51,36 @@ export default  function ProductDetail({ params }: { params: { "product-slug": s
             })
             if (!response.ok){
                 const data = await response.json()
-                return console.log(data)
+                throw data
             }
-            console.log("success")
+            Swal.fire({
+                title: "Success",
+                text: "Product has been added to cart successfully",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+            });
         } catch (error) {
-            console.log(error)
+            if (
+                typeof error === "object" &&
+                error !== null && "message" in error
+            ) {
+                Swal.fire({
+                    title: "Error",
+                    text: `${error.message}`,
+                    icon: "error",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                });
+            } else {
+                console.log(error)
+            }
         }
     }
 

@@ -1,9 +1,12 @@
 import { ButtonBtn } from "@/components/button";
+import ClientFlashComponent from "@/components/errorFlash";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
+  
   const handleLogin = async (formData: FormData) => {
     "use server";
     const email = formData.get("email");
@@ -26,7 +29,6 @@ export default function LoginPage() {
     }
     cookies().set("Authorization", `Bearer ${data.data.access_token}`);
     if (data.admin === true) cookies().set("isAdmin", "True");
-
     return redirect("/");
   };
   return (
@@ -35,6 +37,7 @@ export default function LoginPage() {
         <h1 className="text-3xl text-base-100 font-bold xs:text-4xl md:text-5xl lg:text-5xl xl:text-6xl">
           Login
         </h1>
+        <ClientFlashComponent />
         <br />
         <div className="card flex bg-base-100 shadow-xl w-full xs:w-full md:w-1/2 xl:w-1/2 2xl:w-1/3">
           <form action={handleLogin}>
