@@ -1,12 +1,17 @@
 "use client";
 
 import { addEvent } from "@/app/action";
+import { Map } from "@/components/map";
 import { useState } from "react";
 
 export default function AddEventPage() {
   const [formData, setFormData] = useState({
     name: "",
     location: "",
+    coordinates: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
     eventImg: "",
     startDate: "",
     endDate: "",
@@ -28,6 +33,21 @@ export default function AddEventPage() {
     try {
       addEvent(formData);
     } catch (error) {}
+  }
+  function addGeolocation(
+    payload: { lat: number; lng: number }, address: string
+
+  ) {
+    console.log(payload, `,<<PAYLOAD`);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      coordinates: {
+        type: "Point",
+        coordinates: [payload.lat, payload.lng],
+      },
+      location: address,
+    }));
+    //simpen ke data event
   }
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
@@ -85,15 +105,18 @@ export default function AddEventPage() {
             className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg"
           />
         </div>
+        <div>
+        </div>
         <div className="flex flex-col gap-1 xs:w-5/6 xs:self-center lg:w-8/12 ">
           <label htmlFor="" className="text-xs pl-2 text-white lg:text-base">
             Event location
           </label>
-          <textarea
+          <Map addGeolocation={addGeolocation} />
+          {/* <textarea
             name="location"
             onChange={handleChange}
             className="text-sm py-1 pl-2 w-full bg-white text-base-100 rounded-md md:text-base lg:text-lg"
-          />
+          /> */}
         </div>
         <button
           type="submit"

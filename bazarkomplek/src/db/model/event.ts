@@ -276,6 +276,7 @@ export default class Events {
     const addedEvent = {
       ...newEvent,
       eventSlug: createSlug(newEvent.name),
+      createdAt: new Date()
     };
     //type validation
     const parseResult = NewEventSchema.safeParse(addedEvent);

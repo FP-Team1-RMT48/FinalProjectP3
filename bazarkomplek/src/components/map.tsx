@@ -18,7 +18,11 @@ export const buildMapInfoCardContent = (title: string, body: string) => {
 
 export const libs: Library[] = ["core", "maps", "places", "marker"];
 
-export function Map() {
+export function Map({
+  addGeolocation,
+}: {
+  addGeolocation: (payload: { lat: number; lng: number }, address:string) => void
+}) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [autoComplete, setAutoComplete] =
     useState<google.maps.places.Autocomplete | null>(null);
@@ -29,7 +33,7 @@ export function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
   const placesAutocomplete = useRef<HTMLInputElement>(null);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
-  
+
   useEffect(() => {
     if (isLoaded) {
       //map options
@@ -49,7 +53,7 @@ export function Map() {
       //limit the map bounds
       const javaIslandBounds = new google.maps.LatLngBounds(
         new google.maps.LatLng({ lat: -7.97, lng: 105.18 }), //south west java island
-        new google.maps.LatLng({ lat: -6.14, lng: 113.921 }) //north east java island 
+        new google.maps.LatLng({ lat: -6.14, lng: 113.921 }) //north east java island
       );
       //setup autocomplete
       const gAutoComplete = new google.maps.places.Autocomplete(
@@ -64,7 +68,6 @@ export function Map() {
       );
       setAutoComplete(gAutoComplete);
       setMap(gMap);
-    
     }
   }, [isLoaded]);
 
@@ -78,7 +81,12 @@ export function Map() {
           //place a marker
           setMarker(position, place.name!);
         }
-        console.log({position},`<<<<<,AAA`)
+        const geoLoc = {
+          lat: position?.lat() || 0,
+          lng: position?.lng() || 0,
+        };
+
+        addGeolocation(geoLoc,  place.name as string);
       });
     }
   }, [autoComplete]);
@@ -92,7 +100,7 @@ export function Map() {
       position: location,
       title: "Marker",
     });
-    
+
     const infoCard = new google.maps.InfoWindow({
       position: location,
       content: buildMapInfoCardContent(name, name),
@@ -103,7 +111,7 @@ export function Map() {
       anchor: marker,
     });
   }
-  
+
   return (
     <div className="flex flex-col justify-center space-y-4">
       <input
@@ -116,7 +124,7 @@ export function Map() {
       />
       <label>{selectedPlace}</label>
       {isLoaded ? (
-        <div style={{ height: "600px" }} ref={mapRef} />
+        <div style={{ height: "300px" }} ref={mapRef} />
       ) : (
         <p className="text-center">Loading Maps...</p>
       )}
