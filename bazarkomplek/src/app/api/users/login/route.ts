@@ -42,7 +42,9 @@ export async function POST(request: Request) {
 
     const access_token = createToken({
       _id: user._id,
+      username: user.username,
       email: user.email,
+      phone: user.phoneNumber,
     });
     cookies().set("Authorization", `Bearer ${access_token}`);
     return Response.json({

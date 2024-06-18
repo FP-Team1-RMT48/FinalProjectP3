@@ -31,13 +31,15 @@ export default function LoginPage() {
   };
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center p-24">
-        <h1 className="text-6xl text-base-100 font-bold">Login</h1>
+      <main className="flex min-h-screen flex-col items-center p-10 pt-32 md:p-24">
+        <h1 className="text-3xl text-base-100 font-bold xs:text-4xl md:text-5xl lg:text-5xl xl:text-6xl">
+          Login
+        </h1>
         <br />
-        <div className="card flex bg-base-100 shadow-xl w-1/2">
+        <div className="card flex bg-base-100 shadow-xl w-full xs:w-full md:w-1/2 xl:w-1/2 2xl:w-1/3">
           <form action={handleLogin}>
             <div className="card-body">
-              <label className="flex items-center text-primary justify-center font-bold">
+              <label className="flex items-center text-primary justify-center font-bold xs:text-sm md:text-lg">
                 Email
               </label>
               <input
@@ -48,7 +50,7 @@ export default function LoginPage() {
                 className="grow input bg-white text-base-100"
                 placeholder="email"
               />
-              <label className="flex items-center text-primary justify-center font-bold">
+              <label className="flex items-center text-primary justify-center font-bold xs:text-sm md:text-lg">
                 Password
               </label>
               <input
@@ -58,13 +60,13 @@ export default function LoginPage() {
                 className="grow input bg-white text-base-100"
                 placeholder="password"
               />
-              <div className="flex justify-center items-center pt-10">
+              <div className="flex justify-center items-center pt-6">
                 <ButtonBtn />
               </div>
             </div>
           </form>
         </div>
-        <h6 className="pt-5 text-base-100">
+        <h6 className="pt-5 text-base-100 text-center">
           Don&apos;t have an account?&nbsp;
           <Link href="/register" className="text-accent">
             Signup now!

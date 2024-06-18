@@ -30,7 +30,10 @@ export async function fetchOngoingEventsForHomepage(): Promise<
   EventWithProducts[]
 > {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_BASE_URL + `api/featured-events`
+    process.env.NEXT_PUBLIC_BASE_URL + `api/featured-events`,
+    {
+      cache: "no-store",
+    }
   );
   const data = await response.json();
   return data.data.events;

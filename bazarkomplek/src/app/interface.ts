@@ -113,6 +113,8 @@ export type NewTransaction = {
 export type TransactionInput =Omit<NewTransaction, "createdAt">
 
 export type TransactionWithProductDetail = NewTransaction & {
+    _id: ObjectId | string,
+    status: string,
     productDetail: Product
 }
 

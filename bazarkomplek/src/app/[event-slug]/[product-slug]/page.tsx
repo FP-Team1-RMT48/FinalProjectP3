@@ -75,7 +75,7 @@ export default  function ProductDetail({ params }: { params: { "product-slug": s
                         <p className=" font-bold">Seller Details : <span className="font-normal">{product?.user?.username} - {product?.user?.phoneNumber}</span></p>
                         <p className=" font-bold">Status : <span className="font-normal">{product?.status}</span></p>
                         <p className=" font-bold">Category : <span className="font-normal">{product?.category}</span></p>
-                        <p className=" font-bold">Description : <span className="font-normal">{product?.description}</span></p>
+                        <p className=" font-bold mb-6">Description : <span className="font-normal">{product?.description}</span></p>
                     </div>
                     {product.status == "UNAVAILABLE" ? (
                         <button className="w-full py-2 bg-gray-400 text-primary rounded-lg disabled">Unavailable</button>
