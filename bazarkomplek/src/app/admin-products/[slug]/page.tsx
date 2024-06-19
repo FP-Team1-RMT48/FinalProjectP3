@@ -17,6 +17,7 @@ export default function EditAdminProductDetail({
     name: "",
     image: "",
     description: "",
+    excerpt: "",
     type: "",
     category: "",
     price: 0,
@@ -27,11 +28,13 @@ export default function EditAdminProductDetail({
 
   const fetchProduct = async () => {
     const data = await fetchProductDetail(slug);
-    const { name, image, description, type, category, price, status } = data;
+    const { name, image, description, excerpt, type, category, price, status } =
+      data;
     setFormData({
       name,
       image,
       description,
+      excerpt,
       type,
       category,
       price,
