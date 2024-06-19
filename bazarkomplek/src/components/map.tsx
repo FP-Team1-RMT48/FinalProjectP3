@@ -33,16 +33,15 @@ export function Map({
   const mapRef = useRef<HTMLDivElement>(null);
   const placesAutocomplete = useRef<HTMLInputElement>(null);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
-  const lng = Cookies.get('longitude')
-  const lat = Cookies.get('latitude')
-  console.log(lng,lat,`<<<dari cookies`)
+  const lng = Cookies.get('longitude') as string
+  const lat = Cookies.get('latitude') as string
   useEffect(() => {
     if (isLoaded) {
       //map options
       const mapOptions: google.maps.MapOptions = {
         center: {
-          lat: -6.259975819474845,
-          lng: 106.78397901303737,
+          lat: +lat,
+          lng: +lng,
         },
         zoom: 17,
         mapId: "MY_NEXTJS_MAPID",
