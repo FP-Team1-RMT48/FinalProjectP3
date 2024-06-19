@@ -68,7 +68,7 @@ export default function MyOrders({ params }: { params: { price: string } }) {
         throw new Error(await response.json());
       }
       const data = await response.json();
-      // console.log(data, "<response");
+
       return data;
     } catch (error) {
       console.log(error);

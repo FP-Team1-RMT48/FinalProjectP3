@@ -59,6 +59,11 @@ export default class Events {
       {
         $limit: dataPerPage,
       },
+      {
+        $sort: {
+          startDate: 1,
+        },
+      },
     ];
     const cursor = this.eventCollection().aggregate(agg);
     const events = (await cursor.toArray()) as Event[];
@@ -104,6 +109,11 @@ export default class Events {
         },
         {
           $limit: dataPerPage,
+        },
+        {
+          $sort: {
+            startDate: 1,
+          },
         },
       ];
       const events = (await this.eventCollection()
@@ -151,6 +161,7 @@ export default class Events {
     lat: number;
     lng: number;
   }): Promise<Event[]> {
+    
     const productsDataLimit = 3;
     const agg = [
       {
@@ -175,6 +186,11 @@ export default class Events {
           EventProducts: {
             $slice: ["$EventProducts", productsDataLimit],
           },
+        },
+      },
+      {
+        $sort: {
+          startDate: 1,
         },
       },
     ];
