@@ -62,14 +62,18 @@ export default function AddEventPage() {
   ) {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      coordinates: {
+      locations: {
         type: "Point",
         coordinates: [payload.lng, payload.lat],
       },
       location: address,
-    }));
-  }
+    }
   
+  ));
+    console.log(formData.locations,`<<<formdata locations add event page`)
+    console.log(formData.location,`<<<formdata location add event page`)
+    console.log(payload.lng,payload.lat,`<<<formdata payload add event page`)
+  }
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
       <h3 className="font-bold text-3xl">ADD EVENT</h3>
