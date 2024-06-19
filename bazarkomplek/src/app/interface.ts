@@ -10,12 +10,12 @@ export type Event = {
   eventSlug: string;
   filledLapakSlots: number;
   lapakSlots: number;
-  locations: Locations
+  locations: Locations;
 };
-type Locations ={
-  type: string,
-  coordinates: number[],
-}
+type Locations = {
+  type: string;
+  coordinates: number[];
+};
 
 export type AdminEvent = {
   map(
@@ -52,7 +52,7 @@ export type EventWithProducts = {
   filledLapakSlots: number;
   lapakSlots: number;
   EventProducts: Product[];
-  locations: Locations
+  locations: Locations;
 };
 
 export type Product = {
@@ -70,8 +70,24 @@ export type Product = {
   eventId: ObjectId | string;
 };
 
+export type AdminProduct = {
+  _id: ObjectId | string;
+  sellerId: ObjectId | string;
+  name: string;
+  slug: string;
+  image: string;
+  description: string;
+  excerpt: string;
+  type: string;
+  category: string;
+  status: string;
+  price: number;
+  eventId: ObjectId | string;
+  eventDetails: any;
+};
+
 export type productWithEvent = Product & {
-  event: Event;
+  event: any;
 };
 
 export type productWithUser = Product & {
@@ -111,13 +127,13 @@ export type NewTransaction = {
   createdAt: string;
 };
 
-export type TransactionInput =Omit<NewTransaction, "createdAt">
+export type TransactionInput = Omit<NewTransaction, "createdAt">;
 
 export type TransactionWithProductDetail = NewTransaction & {
-    _id: ObjectId | string,
-    status: string,
-    productDetail: Product
-}
+  _id: ObjectId | string;
+  status: string;
+  productDetail: Product;
+};
 
 export type Pagination = {
   data: Product[] | Transaction[];

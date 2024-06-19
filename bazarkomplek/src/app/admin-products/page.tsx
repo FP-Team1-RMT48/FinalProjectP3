@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Event, Product } from "../interface";
+import { AdminProduct, Event } from "../interface";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function AdminProductPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<AdminProduct[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [filter, setFilter] = useState<string>("");
+  const [events, setEvents] = useState<any>([]);
 
-  async function getAll(page: number): Promise<Product[]> {
+  async function getAll(page: number): Promise<AdminProduct[]> {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}api/products?=${page}`,
       {
@@ -18,6 +20,17 @@ export default function AdminProductPage() {
     );
     const result = await response.json();
     return result.data;
+  }
+
+  async function getAllEvents(): Promise<Event[]> {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/events`,
+      {
+        cache: "no-store",
+      }
+    );
+    const result = await response.json();
+    return result.data.events;
   }
 
   useEffect(() => {
@@ -31,7 +44,12 @@ export default function AdminProductPage() {
         setHasMore(false);
       }
     }
+    async function fetchEvents() {
+      const events = await getAllEvents();
+      setEvents(events);
+    }
     getProducts();
+    fetchEvents();
   }, []);
 
   const paging = async () => {
@@ -43,12 +61,34 @@ export default function AdminProductPage() {
       setHasMore(false);
     }
   };
+  const filteredProducts = filter
+    ? products.filter((product) =>
+        product.eventDetails.some((e: Event) => e.name === filter)
+      )
+    : products;
+  console.log(events, "<events");
   return (
     <>
       <main className="flex min-h-screen flex-col p-10 ">
         <h1 className="text-xl text-center text-base-100 pb-5 font-bold">
-          ADMIN Products
+          VERIFY PRODUCTS
         </h1>
+        <select
+          className="select border-base-100 w-full max-w-xs bg-white text-base-100 font-bold"
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          <option value="">Get all products</option>
+          {events.length > 0 ? (
+            events.map((event: Event, idx: number) => (
+              <option key={idx} value={event.name}>
+                {event.name}
+              </option>
+            ))
+          ) : (
+            <option>Loading events...</option>
+          )}
+        </select>
+        <br />
         <div className="overflow-x-auto">
           <InfiniteScroll
             dataLength={products.length}
@@ -76,7 +116,7 @@ export default function AdminProductPage() {
                   <th>Action</th>
                 </tr>
               </thead>
-              {products.map((e, idx) => {
+              {filteredProducts.map((e, idx) => {
                 return (
                   <tbody key={idx}>
                     <tr>
