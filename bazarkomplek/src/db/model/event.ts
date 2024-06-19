@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { getCollection } from "../config";
 import { z } from "zod";
 import { Product } from "@/app/interface";
+import Cookies from "js-cookie";
 const NewEventSchema = z
   .object({
     name: z.string(),
@@ -147,21 +148,25 @@ export default class Events {
     filter: string;
 
   }): Promise<Event[]> {
+    
     const productsDataLimit = 3;
+    const lng = Cookies.get('longitude')
+    const lat = Cookies.get('latitude')
+    console.log(lng,lat,`<<<dari cookies`)
     const agg = [
-      // {
-      //   '$geoNear': {
-      //     'near': {
-      //       'type': 'Point', 
-      //       'coordinates': [
-      //         107.6919539082812, -6.909547069353043
-      //       ]
-      //     }, 
-      //     'distanceField': 'locations', 
-      //     'maxDistance': 2000, 
-      //     'spherical': true
-      //   }
-      // },
+      {
+        '$geoNear': {
+          'near': {
+            'type': 'Point', 
+            'coordinates': [
+              107.6919539082812, -6.909547069353043
+            ]
+          }, 
+          'distanceField': 'locations', 
+          'maxDistance': 2000, 
+          'spherical': true
+        }
+      },
       {
         $lookup: {
           from: "Products",

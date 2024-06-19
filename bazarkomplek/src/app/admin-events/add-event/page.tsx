@@ -69,6 +69,7 @@ export default function AddEventPage() {
       location: address,
     }));
   }
+  
   return (
     <main className="flex min-h-screen flex-col items-center gap-10 py-10 text-base-100">
       <h3 className="font-bold text-3xl">ADD EVENT</h3>

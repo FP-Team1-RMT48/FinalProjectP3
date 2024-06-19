@@ -6,37 +6,40 @@ import SmallProductCard from "@/components/small-productCard";
 import SmallEventCard from "@/components/small-eventCard";
 import { fetchOngoingEventsForHomepage, fetchUpcomingEvents } from "./action";
 import { Event, EventWithProducts } from "./interface";
+import Cookies from "js-cookie";
 
 type LngLat = {
-    lng: number,
-    lat:number
-}
+  lng: number;
+  lat: number;
+};
 export default function Home() {
-  const [userLocation, setUserLocation] = useState<LngLat>({lng: 0, lat:0});
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([])
-  const [ongoingEvents, setOngoingEvents] = useState<EventWithProducts[]>([])
+  const [userLocation, setUserLocation] = useState<LngLat>({ lng: 0, lat: 0 });
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [ongoingEvents, setOngoingEvents] = useState<EventWithProducts[]>([]);
 
-    const handleUpcomingEvents = async () => {
-        let data = await fetchUpcomingEvents() 
-        if (data.length > 3){
-            data = data.slice(0, 3);
-        }
-        setUpcomingEvents(data)
+  const handleUpcomingEvents = async () => {
+    let data = await fetchUpcomingEvents();
+    if (data.length > 3) {
+      data = data.slice(0, 3);
     }
-    const handleOngoingEvents = async () => {
-        let data = await fetchOngoingEventsForHomepage() 
-        if (data.length > 3){
-            data = data.slice(0, 3);
-        }
-        setOngoingEvents(data)
+    setUpcomingEvents(data);
+  };
+  const handleOngoingEvents = async () => {
+    let data = await fetchOngoingEventsForHomepage();
+    if (data.length > 3) {
+      data = data.slice(0, 3);
     }
+    setOngoingEvents(data);
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setUserLocation({ lng:longitude, lat:latitude });
+          setUserLocation({ lng: longitude, lat: latitude });
+          Cookies.set("latitude", latitude.toString(), { expires: 7 });
+          Cookies.set("longitude", longitude.toString(), { expires: 7 });
         },
         (error) => {
           console.error("Error fetching location", error);
@@ -45,13 +48,12 @@ export default function Home() {
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-    
   }, [setUserLocation]);
 
-  useEffect(()=>{
-    handleUpcomingEvents()
-    handleOngoingEvents()
-  },[])
+  useEffect(() => {
+    handleUpcomingEvents();
+    handleOngoingEvents();
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col justify-between gap-10 pb-10">

@@ -3,7 +3,7 @@
 import { Library } from "@googlemaps/js-api-loader";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { useEffect, useRef, useState } from "react";
-
+import Cookies from "js-cookie";
 type LatLong = {
   coordinates: [lat: number, long: number];
 };
@@ -33,7 +33,9 @@ export function Map({
   const mapRef = useRef<HTMLDivElement>(null);
   const placesAutocomplete = useRef<HTMLInputElement>(null);
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
-
+  const lng = Cookies.get('longitude')
+  const lat = Cookies.get('latitude')
+  console.log(lng,lat,`<<<dari cookies`)
   useEffect(() => {
     if (isLoaded) {
       //map options
