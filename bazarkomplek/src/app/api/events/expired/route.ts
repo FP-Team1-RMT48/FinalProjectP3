@@ -1,5 +1,7 @@
 import Events from "@/db/model/event";
 import { NextRequest } from "next/server";
+
+export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -10,7 +12,7 @@ export async function GET(request: NextRequest) {
       filter,
     });
     return Response.json({
-      data: {events},
+      data: { events },
     });
   } catch (error) {
     console.log(error);
@@ -21,4 +23,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-  }
+}

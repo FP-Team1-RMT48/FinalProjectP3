@@ -1,6 +1,8 @@
 import Events from "@/db/model/event";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -31,7 +33,6 @@ export async function GET(request: NextRequest) {
         data: { events },
       });
     }
-    
   } catch (error) {
     console.log(error);
     return Response.json(

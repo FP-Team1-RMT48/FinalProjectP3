@@ -14,7 +14,7 @@ export async function PUT(request: NextRequest) {
       );
     }
     const data = await request.json();
-    let editTransaction = _.pick(data, [
+    let editTransaction: any = _.pick(data, [
       "transaction_time",
       "transaction_status",
       "transaction_id",
