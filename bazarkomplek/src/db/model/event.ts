@@ -97,7 +97,7 @@ export default class Events {
       upcomingThreshold.setDate(today.getDate() + 30);
 
       //aggregation
-      const dataPerPage = 4;
+      const dataPerPage = 10;
       const agg = [
         {
           $match: {
