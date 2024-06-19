@@ -46,7 +46,7 @@ export default function AdminEventsPage() {
     <>
       <main className="flex min-h-screen flex-col p-10 ">
         <h1 className="text-xl text-center text-base-100 pb-5 font-bold">
-          ADMIN Events
+          EVENTS
         </h1>
         <div className="overflow-x-auto">
           <InfiniteScroll

@@ -51,9 +51,9 @@ export default function Navbar({ logOn }: { logOn: boolean }) {
             <li className="block md:hidden">
               <Link href={"/my-lapak"}>My Lapak</Link>
             </li>
-            <li className="">
+            {/* <li className="">
               <a>Profile</a>
-            </li>
+            </li> */}
             <li className="">
               <Link href={"/about-us"}>About Us</Link>
             </li>

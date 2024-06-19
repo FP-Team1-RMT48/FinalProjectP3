@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function middleware(request: NextRequest) {
   const token = cookies().get("Authorization")?.value.split(" ")[1];
-
+  const checkCookies = cookies().get("Authorization");
   const adminToken = cookies().get("isAdmin");
 
   if (request.nextUrl.pathname.startsWith("/admin-products")) {
@@ -26,6 +26,21 @@ export async function middleware(request: NextRequest) {
   }
   if (request.nextUrl.pathname.startsWith("/admin-events/:path*")) {
     if (!adminToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
+  if (request.nextUrl.pathname.startsWith("/my-orders")) {
+    if (!checkCookies) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
+  if (request.nextUrl.pathname.startsWith("/my-lapak")) {
+    if (!checkCookies) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
+  if (request.nextUrl.pathname.startsWith("/profile")) {
+    if (!checkCookies) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
@@ -69,6 +84,7 @@ export const config = {
     "/api/transactions/:path*",
     "/api/products/sellerId",
     "/my-lapak/:path*",
+    "/my-orders",
     "/api/products/edit/:slug*",
     "/api/products/delete/:slug*",
     "/admin-products",
