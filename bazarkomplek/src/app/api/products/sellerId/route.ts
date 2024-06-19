@@ -9,7 +9,6 @@ export async function GET(request: Request) {
         if (!sellerId) {
             return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
         }
-        console.log(sellerId, "<<<api")
         const products = await Products.getProductBySellerId(sellerId);
         return Response.json({ products });
     } catch (error: any) { // Tipe eksplisit untuk variabel error

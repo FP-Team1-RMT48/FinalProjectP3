@@ -5,6 +5,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Product, TransactionWithProductDetail } from "@/app/interface";
 import { Midtransaction } from "./midtransaction";
+import formatCurrencyIDR from "@/utils/currencyConverter";
 
 export default function TransactionCard({
   transaction,
@@ -46,7 +47,7 @@ export default function TransactionCard({
           <p className=" font-bold">
             Product Price :{" "}
             <span className="font-normal">
-              {transaction.productDetail.price}
+              {formatCurrencyIDR(transaction.productDetail.price)}
             </span>
           </p>
           <p className="pb-4 font-bold">

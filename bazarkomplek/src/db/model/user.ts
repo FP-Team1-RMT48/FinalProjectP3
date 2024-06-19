@@ -4,18 +4,18 @@ import { InputLogin } from "@/app/api/users/login/route";
 import { hashPassword } from "@/helpers/bcryptjs";
 
 const UserSchema = z.object({
-    username: z.string().min(3),
-    email: z.string().email().min(1),
-    password: z.string().min(6),
+    username: z.string({message:`Username cannot be empty`}).min(3),
+    email: z.string({message:`Email cannot be empty` }).email().min(1),
+    password: z.string({message:`Password cannot be empty`}).min(5,{message: `Password length minimum is 5`}),
     location: z.string().optional(),
-    phoneNumber: z.string().optional(),
+    phoneNumber: z.string({message:`Phone Number cannot be empty` }),
     isAdmin: z.boolean().default(false).optional()
 });
 
 const LoginUserSchema = z.object({
-    email: z.string().min(1, { message: "Email cannot Empty" })
-        .email({ message: "Invalid Email Address" }),
-    password: z.string().min(1, { message: "Password Cannot Empty" }),
+    email: z.string().min(1, { message: "Email cannot be empty" })
+        .email({ message: "Invalid email format" }),
+    password: z.string().min(1, { message: "Password cannot be empty" }),
 });
 
 type User = z.infer<typeof UserSchema>;

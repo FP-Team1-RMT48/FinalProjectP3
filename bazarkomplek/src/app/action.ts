@@ -20,7 +20,7 @@ export async function fetchEventDetail(
   eventSlug: string
 ): Promise<EventWithProducts> {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_BASE_URL + `api/events/${eventSlug}`
+    process.env.NEXT_PUBLIC_BASE_URL + `api/events/${eventSlug}`, {cache:"no-store"}
   );
   const data = await response.json();
   return data.data.event[0];

@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export type Event = {
-  _id: string;
+  _id?: string;
   name: string;
   location: string;
   eventImg: string;
@@ -10,7 +10,13 @@ export type Event = {
   eventSlug: string;
   filledLapakSlots: number;
   lapakSlots: number;
+  locations: Locations
 };
+type Locations ={
+  type: string,
+  coordinates: number[],
+}
+
 export type AdminEvent = {
   map(
     arg0: (e: AdminEvent, idx: number) => import("react").JSX.Element
@@ -46,6 +52,7 @@ export type EventWithProducts = {
   filledLapakSlots: number;
   lapakSlots: number;
   EventProducts: Product[];
+  locations: Locations
 };
 
 export type Product = {
@@ -79,7 +86,7 @@ export type Transaction = {
   status: string;
 };
 
-export type EditedProduct = Omit<Product, "_id" | "sellerId" | "eventId">;
+export type EditedProduct = Omit<Product, "_id" | "sellerId">;
 
 export type NewProduct = {
   sellerId: string;

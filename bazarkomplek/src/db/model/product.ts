@@ -40,6 +40,35 @@ const NewProductSchema = z.object({
   }),
 });
 
+const EditProductSchema = z.object({
+  name: z
+    .string({ message: "Product name is required" })
+    .min(1, { message: "Product name is required" }),
+  slug: z
+    .string({ message: "Product slug is required" })
+    .min(1, { message: "Product slug is required" }),
+  image: z
+    .string({ message: "Product image is required" })
+    .min(1, { message: "Product image is required" }),
+  description: z
+    .string({ message: "Product description is required" })
+    .min(1, { message: "Product description is required" }),
+  excerpt: z.string().optional(),
+  type: z
+    .string({ message: "Product type is required" })
+    .min(1, { message: "Product type is required" }),
+  category: z
+    .string({ message: "Product category is required" })
+    .min(1, { message: "Product category is required" }),
+  status: z.string().default("VERIFYING"),
+  price: z
+    .number({ message: "Price must be a positive number" })
+    .min(1, { message: "Price must be a positive number" }),
+  eventId: z.any().refine((val) => val !== null && val !== undefined, {
+    message: "Event ID cannot be null or undefined",
+  }),
+});
+
 export function createSlug(name: string): string {
   return name
     .toLowerCase()
@@ -181,6 +210,8 @@ export default class Products {
     updatedProductBody: EditedProduct,
     userId: string
   ) {
+    
+
     const existingProduct = await this.collection().findOne({ slug });
     if (!existingProduct) {
       throw new Error("Product not found");
@@ -197,10 +228,15 @@ export default class Products {
       type: updatedProductBody.type,
       category: updatedProductBody.category,
       status: updatedProductBody.status,
-      price: updatedProductBody.price,
+      price: +updatedProductBody.price,
+      eventId: new ObjectId(updatedProductBody.eventId),
       slug: createSlug(updatedProductBody.name),
     };
-    NewProductSchema.partial().parse({ editedProduct });
+    const parseResult = EditProductSchema.safeParse(editedProduct);
+    if (!parseResult.success) {
+      throw parseResult.error;
+    }
+    // NewProductSchema.partial().parse({ editedProduct });
     await this.collection().updateOne({ slug }, { $set: editedProduct });
 
     return { message: "Product updated successfully" };
@@ -224,9 +260,14 @@ export default class Products {
       category: updatedProductBody.category,
       status: updatedProductBody.status,
       price: updatedProductBody.price,
+      eventId: new ObjectId(updatedProductBody.eventId),
       slug: createSlug(updatedProductBody.name),
     };
-    NewProductSchema.partial().parse({ editedProduct });
+    const parseResult = EditProductSchema.safeParse(editedProduct);
+    if (!parseResult.success) {
+      throw parseResult.error;
+    }
+    // NewProductSchema.partial().parse({ editedProduct });
     await this.collection().updateOne({ slug }, { $set: editedProduct });
 
     return { message: "Product updated successfully" };

@@ -1,7 +1,7 @@
 'use client'
 
 import { fetchProductDetail } from "@/app/action";
-import { Product, productWithUser } from "@/app/interface";
+import { productWithUser } from "@/app/interface";
 import formatCurrencyIDR from "@/utils/currencyConverter";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";

@@ -1,9 +1,7 @@
 "use client";
 
-import ProductCards from "@/components/cards";
 import { useEffect, useState } from "react";
 import { Event, EventWithProducts, Product } from "../interface";
-import ProductCard from "@/components/productCard";
 import { fetchEventDetail } from "../action";
 import SmallProductCard from "@/components/small-productCard";
 
@@ -22,6 +20,10 @@ export default function EventDetail({
     eventSlug: "string",
     filledLapakSlots: 0,
     lapakSlots: 0,
+    locations:{
+      type: "Point",
+      coordinates: [0, 0],
+    }, 
   });
 
   const [products, setProducts] = useState<Product[]>([]);

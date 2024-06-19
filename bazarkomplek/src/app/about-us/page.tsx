@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Map } from "@/components/map";
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-const latlong={coordinates:[-6.259975819474845, 106.78397901303737]}
+
 export default function AboutUs() {
     return (
         <>
@@ -167,9 +165,7 @@ export default function AboutUs() {
                         </motion.div>
                     </div>
                 </section>
-                <Map />
                 <div>
-            {/* <GooglePlacesAutocomplete apiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY} apiOptions={{ language: 'fr', region: 'fr' }}/> */}
         </div>
             </div>  
         </main>
