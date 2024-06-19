@@ -3,6 +3,7 @@ import { getCollection } from "../config";
 import { z } from "zod";
 import { Product } from "@/app/interface";
 import Cookies from "js-cookie";
+import { cookies } from "next/headers";
 const NewEventSchema = z
   .object({
     name: z.string(),
@@ -139,33 +140,85 @@ export default class Events {
       );
     });
   }
-
   static async getOngoingEventsWithLimitedProducts({
     page,
-    filter
+    filter,
+    lat,
+    lng,
   }: {
     page: string;
     filter: string;
-
+    lat: number;
+    lng: number;
   }): Promise<Event[]> {
-    
     const productsDataLimit = 3;
-    const lng = Cookies.get('longitude')
-    const lat = Cookies.get('latitude')
-    console.log(lng,lat,`<<<dari cookies`)
     const agg = [
       {
-        '$geoNear': {
-          'near': {
-            'type': 'Point', 
-            'coordinates': [
-              107.6919539082812, -6.909547069353043
-            ]
-          }, 
-          'distanceField': 'locations', 
-          'maxDistance': 2000, 
-          'spherical': true
-        }
+        $lookup: {
+          from: "Products",
+          localField: "_id",
+          foreignField: "eventId",
+          as: "EventProducts",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          location: 1,
+          eventImg: 1,
+          startDate: 1,
+          endDate: 1,
+          eventSlug: 1,
+          filledLapakSlots: 1,
+          lapakSlots: 1,
+          EventProducts: {
+            $slice: ["$EventProducts", productsDataLimit],
+          },
+        },
+      },
+    ];
+    const cursor = this.eventCollection().aggregate(agg);
+    const events = (await cursor.toArray()) as EventResponse[];
+    const today = new Date();
+    const ongoingThreshold = new Date(today);
+    ongoingThreshold.setDate(today.getDate() + 14);
+
+    return events.filter((event) => {
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
+      const beforePastEventsThreshold = new Date(endDate);
+      beforePastEventsThreshold.setDate(endDate.getDate() + 7);
+
+      return (
+        (startDate <= ongoingThreshold && startDate >= today) ||
+        (today >= startDate && today <= beforePastEventsThreshold)
+      );
+    });
+  }
+  static async getNearOngoingEventsWithLimitedProducts({
+    page,
+    filter,
+    lat,
+    lng,
+  }: {
+    page: string;
+    filter: string;
+    lat: number;
+    lng: number;
+  }): Promise<Event[]> {
+    const productsDataLimit = 3;
+    const agg = [
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [lng, lat],
+          },
+          distanceField: "locations",
+          maxDistance: 2000,
+          spherical: true,
+        },
       },
       {
         $lookup: {
@@ -295,7 +348,7 @@ export default class Events {
     const addedEvent = {
       ...newEvent,
       eventSlug: createSlug(newEvent.name),
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     //type validation
     const parseResult = NewEventSchema.safeParse(addedEvent);
@@ -313,19 +366,19 @@ export default class Events {
     return await this.eventCollection().insertOne(addedEvent);
   }
 
-  static async getNearbyLocation(lat:number,lng:number){
-   const agg =([
+  static async getNearbyLocation(lat: number, lng: number) {
+    const agg = [
       {
         $geoNear: {
           near: { type: "Point", coordinates: [lat, lng] },
           distanceField: "coordinates",
           maxDistance: 1000,
-          spherical: true
-        }
+          spherical: true,
+        },
       },
       { $limit: 5 }, // Limit to 5 results
-      { $project: { name: 1, distance: 1, _id: 0 } } // Project only the name and distance fields
-    ]);
+      { $project: { name: 1, distance: 1, _id: 0 } }, // Project only the name and distance fields
+    ];
     const cursor = this.eventCollection().aggregate(agg);
     const result = await cursor.toArray();
     return result;
