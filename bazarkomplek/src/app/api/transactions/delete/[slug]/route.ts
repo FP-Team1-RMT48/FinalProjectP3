@@ -6,7 +6,7 @@ export async function DELETE(request: NextRequest) {
     const url = new URL(request.url);
     const buyerId = request.headers.get("x-id-user") as string;
     const id = url.pathname.split("/").pop();
-    console.log(id, "<id");
+
     if (!id) {
       return NextResponse.json(
         { message: "transaction id not supplied" },

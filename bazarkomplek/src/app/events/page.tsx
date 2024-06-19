@@ -22,6 +22,7 @@ export default function Events() {
         getOngoingEvents();
         getUpcomingEvents();
     }, [])
+
     return (
         <main className="flex min-h-screen flex-col items-center py-10 text-base-100">
             <p className="font-bold sm:text-xl md:text-3xl">

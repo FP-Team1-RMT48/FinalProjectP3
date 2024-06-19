@@ -20,9 +20,7 @@ export default function EventCard({event, index}: {event: Event, index: number})
             <div className="pt-10 gap-4 flex flex-col">
             <p className=""><span className="font-bold">Start Date:</span> {event.startDate}</p>
             <p className=""><span className="font-bold">End Date:</span> {event.endDate}</p>
-            <p className=""><span className="font-bold">Location:</span> {event.location}</p>
-            <p className=""><span className="font-bold">Lapak Saat Ini:</span> {event.filledLapakSlots}</p>
-            </div>
+            <p className=""><span className="font-bold">Location:</span> {event.location}</p>            </div>
         </div>
         <div className="card-actions mt-auto mb-10 flex justify-center">
             <Link href={`/${event.eventSlug}`}><button className="btn btn-primary">View Details</button></Link>
