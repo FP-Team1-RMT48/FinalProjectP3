@@ -6,7 +6,7 @@ export async function PUT(request: NextRequest) {
   try {
     const url = new URL(request.url);
     const id = url.pathname.split("/").pop();
-    console.log(id, "<id");
+
     if (!id) {
       return NextResponse.json(
         { message: "transaction id not supplied" },

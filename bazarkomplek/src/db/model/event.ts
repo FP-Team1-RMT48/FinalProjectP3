@@ -123,7 +123,7 @@ export default class Events {
     page: string;
     filter: string;
   }): Promise<Event[]> {
-    const events = await this.getEventsWithPagination(4, page, filter);
+    const events = await this.getEventsWithPagination(10, page, filter);
     const today = new Date();
     const ongoingThreshold = new Date(today);
     ongoingThreshold.setDate(today.getDate() + 14);

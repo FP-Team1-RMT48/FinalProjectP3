@@ -29,12 +29,14 @@ export async function fetchEventDetail(
 export async function fetchOngoingEventsForHomepage(): Promise<
   EventWithProducts[]
 > {
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + `api/featured-events`,
     {
-      cache: "no-store", headers: {
-        Cookie: cookies().toString()
-      }
+      cache: "no-store", 
+      // headers: {
+      //   Cookie: cookies().toString()
+      // }
     }
   );
   const data = await response.json();
