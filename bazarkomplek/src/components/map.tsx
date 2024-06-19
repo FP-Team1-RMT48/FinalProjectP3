@@ -83,10 +83,10 @@ export function Map({
           setMarker(position, place.name!);
         }
         const geoLoc = {
-          lng: position?.lat() || 0,
+          lng: position?.lng() || 0,
           lat: position?.lat() || 0,
         };
-
+        console.log(geoLoc,position?.lng(),position?.lat(),`<<geoloc map`)
         addGeolocation(geoLoc,  place.formatted_address as string);
       });
     }
