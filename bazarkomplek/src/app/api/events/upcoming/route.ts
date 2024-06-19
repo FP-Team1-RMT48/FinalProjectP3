@@ -1,5 +1,7 @@
 import Events, { EventResponse } from "@/db/model/event";
 import { NextRequest } from "next/server";
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

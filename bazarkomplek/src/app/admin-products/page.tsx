@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import { AdminProduct, Event } from "../interface";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminProductPage() {
   const [products, setProducts] = useState<AdminProduct[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [filter, setFilter] = useState<string>("");
-  const [events, setEvents] = useState<any>([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   async function getAll(page: number): Promise<AdminProduct[]> {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}api/products?=${page}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/products?page=${page}`,
       {
         cache: "no-store",
       }
@@ -44,11 +46,15 @@ export default function AdminProductPage() {
         setHasMore(false);
       }
     }
+
+    getProducts();
+  }, []);
+
+  useEffect(() => {
     async function fetchEvents() {
       const events = await getAllEvents();
       setEvents(events);
     }
-    getProducts();
     fetchEvents();
   }, []);
 
@@ -61,15 +67,16 @@ export default function AdminProductPage() {
       setHasMore(false);
     }
   };
+
   const filteredProducts = filter
     ? products.filter((product) =>
         product.eventDetails.some((e: Event) => e.name === filter)
       )
     : products;
-  console.log(events, "<events");
+
   return (
     <>
-      <main className="flex min-h-screen flex-col p-10 ">
+      <main className="flex min-h-screen flex-col p-10">
         <h1 className="text-xl text-center text-base-100 pb-5 font-bold">
           VERIFY PRODUCTS
         </h1>
@@ -107,7 +114,7 @@ export default function AdminProductPage() {
           >
             <table className="table text-base-100 border-2 border-base-100">
               <thead className="text-base-100">
-                <tr className="">
+                <tr>
                   <th>No.</th>
                   <th>Products</th>
                   <th>Event</th>
@@ -116,68 +123,62 @@ export default function AdminProductPage() {
                   <th>Action</th>
                 </tr>
               </thead>
-              {filteredProducts.map((e, idx) => {
-                return (
-                  <tbody key={idx}>
-                    <tr>
-                      <td>{idx + 1}</td>
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle w-12 h-12">
-                              <img
-                                src={e.image}
-                                key={idx}
-                                alt="Avatar Tailwind CSS Component"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <div className="font-bold">{e.name}</div>
-                            <span className="badge badge-ghost badge-sm ">
-                              {e.status}
-                            </span>
+              {filteredProducts.map((e, idx) => (
+                <tbody key={idx}>
+                  <tr>
+                    <td>{idx + 1}</td>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img src={e.image} alt="Product" />
                           </div>
                         </div>
-                      </td>
-                      <td>
-                        {e.eventDetails && e.eventDetails.length > 0 ? (
-                          e.eventDetails.map((event: Event, idx: number) => (
-                            <div key={idx}>{event.eventSlug}</div>
-                          ))
-                        ) : (
-                          <div>Not tied to any event!</div>
-                        )}
-                      </td>
-                      <td>
-                        {e.eventDetails && e.eventDetails.length > 0 ? (
-                          e.eventDetails.map((event: Event, idx: number) => (
-                            <div key={idx}>{event.startDate}</div>
-                          ))
-                        ) : (
-                          <div>Not Set</div>
-                        )}
-                      </td>
-                      <td>
-                        {e.eventDetails && e.eventDetails.length > 0 ? (
-                          e.eventDetails.map((event: Event, idx: number) => (
-                            <div key={idx}>{event.endDate}</div>
-                          ))
-                        ) : (
-                          <div>Not Set</div>
-                        )}
-                      </td>
-                      <th>
-                        <a href={`admin-products/${e.slug}`}>
-                          <button className="btn btn-ghost btn-xs">
-                            details
-                          </button>
-                        </a>
-                      </th>
-                    </tr>
-                  </tbody>
-                );
-              })}
+                        <div>
+                          <div className="font-bold">{e.name}</div>
+                          <span className="badge badge-ghost badge-sm">
+                            {e.status}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      {e.eventDetails && e.eventDetails.length > 0 ? (
+                        e.eventDetails.map((event: Event, idx: number) => (
+                          <div key={idx}>{event.eventSlug}</div>
+                        ))
+                      ) : (
+                        <div>Not tied to any event!</div>
+                      )}
+                    </td>
+                    <td>
+                      {e.eventDetails && e.eventDetails.length > 0 ? (
+                        e.eventDetails.map((event: Event, idx: number) => (
+                          <div key={idx}>{event.startDate}</div>
+                        ))
+                      ) : (
+                        <div>Not Set</div>
+                      )}
+                    </td>
+                    <td>
+                      {e.eventDetails && e.eventDetails.length > 0 ? (
+                        e.eventDetails.map((event: Event, idx: number) => (
+                          <div key={idx}>{event.endDate}</div>
+                        ))
+                      ) : (
+                        <div>Not Set</div>
+                      )}
+                    </td>
+                    <th>
+                      <a href={`admin-products/${e.slug}`}>
+                        <button className="btn btn-ghost btn-xs">
+                          details
+                        </button>
+                      </a>
+                    </th>
+                  </tr>
+                </tbody>
+              ))}
             </table>
           </InfiniteScroll>
         </div>
